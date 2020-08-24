@@ -1,0 +1,145 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 1.094vw;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+  transition: all 300ms;
+}
+
+:focus,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  border: none;
+}
+
+body {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  font-family: "Roboto", "Mulish", "Source Sans Pro", sans-serif;
+  background: #eeeeee;
+  color: #2b2c50;
+  overflow: hidden;
+}
+
+/* Elemento | http://127.0.0.1:5500/public/404/404.html */
+.svgs > svg:nth-child(1) {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  pointer-events: visiblestroke;
+}
+
+.JaretoImagen {
+  opacity: 0;
+}
+
+/* Elemento | http://127.0.0.1:5500/public/404/404.html */
+body > main:nth-child(1) {
+  padding: 5em;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Elemento | http://127.0.0.1:5500/public/404/404.html */
+.h1 {
+  text-align: center;
+}
+
+a {
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-decoration: none;
+  color: #2b2c50;
+  border: 0.3em solid #2b2c50;
+  border-radius: 1.5rem;
+  padding: 0.5em;
+}
+
+a:hover {
+  color: #eeeeee;
+  background: #2b2c50;
+}
+
+@media only screen and (min-width: 1921px) {
+  * {
+    font-size: 1vw;
+  }
+  .color-one {
+    width: 4vw;
+    height: 4vw;
+  }
+}
+
+@media only screen and (min-width: 1441px) and (max-width: 1920px) {
+  * {
+    font-size: 1.1vw;
+  }
+  .color-one {
+    width: 4.5vw;
+    height: 4.5vw;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1440px) {
+  * {
+    font-size: 1.4vw;
+  }
+}
+
+@media only screen and (min-width: 981px) and (max-width: 1024px) {
+  * {
+    font-size: 2.1vw;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 980px) {
+  * {
+    font-size: 2.3vw;
+  }
+}
+
+@media only screen and (min-width: 431px) and (max-width: 768px) {
+  * {
+    font-size: 3vw;
+  }
+  .svgs > svg:nth-child(1) {
+    width: 100vw;
+    height: 70vh;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  * {
+    font-size: 4vw;
+  }
+  .svgs > svg:nth-child(1) {
+    width: 100vw;
+    height: 70vh;
+  }
+}
+/*# sourceMappingURL=404.css.map */

@@ -1,0 +1,22 @@
+{
+  "name": "PPaint.io",
+  "version": "1.0.1",
+  "description": "Paint and guess with friends",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server/server.js",
+    "devStart": "nodemon src/server/server.js"
+  },
+  "author": "PP",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.23.3",
+    "nedb": "^1.8.0",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
