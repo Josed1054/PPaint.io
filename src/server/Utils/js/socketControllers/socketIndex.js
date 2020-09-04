@@ -16,6 +16,9 @@ const { socketCanvasRate } = require("./socketCanvasRate");
 const { socket10secMatch } = require("./socket10secMatch");
 const { socket15secNewRate } = require("./socket15secNewRate");
 const { socket10secNewMatch } = require("./socket10secNewMatch");
+const {
+  socketNewPlayerPlayingAgain,
+} = require("./socketNewPlayerPlayingAgain");
 const { socketDisconnect } = require("./socketDisconnect");
 
 let absoluteUrl;
@@ -123,9 +126,12 @@ function socketIndex(socket) {
     socket10secNewMatch(socket, _id, seconds, absoluteUrl);
   });
 
+  socket.on("newPlayerPlayingAgain", function (_id, userName, userColor) {
+    socketNewPlayerPlayingAgain(socket, _id, userName, userColor);
+  });
+
   socket.on("disconnect", function () {
-    let socketId = socket.id;
-    socketDisconnect(socket, socketId, absoluteUrl);
+    socketDisconnect(socket, socket.id, absoluteUrl);
   });
 }
 

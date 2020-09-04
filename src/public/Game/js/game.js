@@ -10,6 +10,7 @@ import {
   emit10secMatch,
   emit15secNewRate,
   emit10secNewMatch,
+  emitPlayAgain,
 } from "./index.js";
 
 const mesageInput = document.querySelector(".msg-input");
@@ -134,7 +135,7 @@ function sec90Timer() {
   sec90Interval = setInterval(timer, 1000);
 
   // Timer = 15 sec
-  let seconds = 90;
+  let seconds = 5;
 
   function timer() {
     if (seconds >= 0) {
@@ -207,7 +208,7 @@ export function ratePaint() {
   // Rate the paint
 
   // Timer = 15 sec
-  let seconds = 15;
+  let seconds = 5;
 
   function timer() {
     if (seconds >= 0) {
@@ -225,7 +226,7 @@ export function ratePaint() {
 
   function send10sec() {
     // Timer = 10 sec
-    let seconds2 = 10;
+    let seconds2 = 5;
 
     function timer10sec() {
       if (seconds2 >= 0) {
@@ -574,9 +575,17 @@ export function paintsResume(canvas, users, colors, points, words) {
   previousButn.onclick = previousPage;
   canvasDivs.appendChild(previousButn);
 
+  const playAgainButn = document.createElement("input");
+  playAgainButn.type = "button";
+  playAgainButn.value = "Play Again";
+  playAgainButn.onclick = playAgain;
+  playAgainButn.className = "playAgainButn";
+  canvasDivs.appendChild(playAgainButn);
+
   const homeBtun = document.createElement("a");
   homeBtun.href = "./";
   homeBtun.innerText = "Home";
+  homeBtun.className = "lastHomeButn";
   canvasDivs.appendChild(homeBtun);
 }
 
@@ -593,4 +602,11 @@ function previousPage() {
   const canvasDivs = document.querySelector(".canvasDivs");
   canvasDivs.style.zIndex = "50";
   canvasDivs.style.pointerEvents = "none";
+}
+
+function playAgain() {
+  document.querySelector(".lastHomeButn").remove();
+  document.querySelector(".playAgainButn").remove();
+
+  emitPlayAgain();
 }

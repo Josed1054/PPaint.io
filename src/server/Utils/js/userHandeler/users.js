@@ -17,6 +17,7 @@ function createRoom(_id, Room, Code) {
 
   const userCreate = {
     _id,
+    softReset: false,
     gameStatus: "waiting Room",
     gameRound: 1,
     userTurn: 0,

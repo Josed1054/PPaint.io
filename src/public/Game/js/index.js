@@ -71,6 +71,10 @@ socket.on("userNumber", (number) => {
 
 innerCodeRoom(room, code);
 
+ifvisible.now("hidden", function () {
+  console.log("lol page hidden");
+});
+
 // Emit Url
 
 const url = window.location.href;
@@ -329,6 +333,10 @@ export function emit15secNewRate(seconds2) {
 export function emit10secNewMatch(seconds2) {
   gameStatus = "viewing Score";
   socket.emit("10secNewMatch", _id, seconds2);
+}
+
+export function emitPlayAgain() {
+  socket.emit("newPlayerPlayingAgain", _id, userName, userColor);
 }
 // Game.js
 

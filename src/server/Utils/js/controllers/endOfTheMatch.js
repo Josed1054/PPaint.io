@@ -36,19 +36,20 @@ function endOfTheMatch(socket, _id, end, absoluteUrl) {
                 { _id: `${_id}` },
                 {
                   $set: {
+                    softReset: false,
                     gameStatus: "Final",
                   },
                 }
               );
+              console.log("set softReset = false");
               sendResultsOfTheMatch(_id);
             } else if (userTurn == users.length - 1) {
-              let userTurn0 = 0;
               let gameRound1Plus = Number(gameRound + 1);
               databaseUsers.update(
                 { _id: `${_id}` },
                 {
                   $set: {
-                    userTurn: userTurn0,
+                    userTurn: 0,
                     gameRound: gameRound1Plus,
                   },
                 }
@@ -76,10 +77,12 @@ function endOfTheMatch(socket, _id, end, absoluteUrl) {
                 { _id: `${_id}` },
                 {
                   $set: {
+                    softReset: false,
                     gameStatus: "Final",
                   },
                 }
               );
+              console.log("set softReset = false");
               sendResultsOfTheMatch(_id);
             } else if (userTurn >= users.length - 1) {
               let userTurn0 = 0;
