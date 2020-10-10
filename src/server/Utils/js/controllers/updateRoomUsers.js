@@ -11,6 +11,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
       return err;
     } else if (docs[0] !== null) {
       try {
+        let sockets = docs[0].users.socketId;
         let numbers = docs[0].users.userNumber;
         let users = docs[0].users.userName;
         let colors = docs[0].users.userColor;
@@ -30,6 +31,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
           if (newLeaderNum == undefined) {
             sendUsersToRoom(
               _id,
+              sockets,
               numbers,
               users,
               colors,
@@ -41,6 +43,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
             io.to(_id).emit("newLeader", newLeaderNum, newLeaderName);
             sendUsersToRoom(
               _id,
+              sockets,
               numbers,
               users,
               colors,
@@ -52,7 +55,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
         } else if (gameStatus == "Painting") {
           io.in(_id).emit("round", gameRound);
           io.to(_id).emit("startGame");
-          sendUsersToRoom(_id, numbers, users, colors, points);
+          sendUsersToRoom(_id, sockets, numbers, users, colors, points);
           io.to(_id).emit("userPainting", userNumberOfThePainter);
         } else if (gameStatus == "ratingPaint") {
           io.in(_id).emit("round", gameRound);
@@ -67,7 +70,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
               let canvasPainted = docs2[0].paint.canvas[lastCanvasPainted];
               io.in(_id).emit("rateCanvas", canvasPainted, wordPainted);
 
-              sendUsersToRoom(_id, numbers, users, colors, points);
+              sendUsersToRoom(_id, sockets, numbers, users, colors, points);
             }
           });
         } else if (gameStatus == "viewing Score") {
@@ -89,10 +92,11 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
             }
           });
 
-          sendUsersToRoom(_id, numbers, users, colors, points);
+          sendUsersToRoom(_id, sockets, numbers, users, colors, points);
         } else if (gameStatus == "Final") {
           io.to(_id).emit("startGame");
           sendResultsOfTheMatch(_id);
+        } else if (gameStatus == "") {
         }
       } catch (error) {
         console.log(error);

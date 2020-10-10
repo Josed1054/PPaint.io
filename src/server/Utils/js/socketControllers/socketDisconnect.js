@@ -6,7 +6,6 @@ const { erraseRoom } = require("../controllers/erraseRoom");
 const { updateRoomUsers } = require("../controllers/updateRoomUsers");
 
 function socketDisconnect(socket, socketId, absoluteUrl) {
-  console.log("users Dissconects");
   databaseUsers.find({ "users.socketId": `${socketId}` }, (err, docs) => {
     if (docs[0] == null) {
       socket.emit("bruh", "connection error, please relogin");

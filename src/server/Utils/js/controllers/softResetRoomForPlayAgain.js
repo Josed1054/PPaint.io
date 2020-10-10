@@ -1,17 +1,16 @@
 const { databaseRooms, databaseUsers } = require("../userHandeler/users");
 
 function softResetRoomForPlayAgain(_id) {
-  console.log("cleaning data bases");
   databaseUsers.update(
     { _id: `${_id}` },
     {
       $set: {
-        "canvasPionts.paintPlus": [],
-      },
-      $set: {
         softReset: true,
-      },
-      $set: {
+        gameStatus: "waiting Room",
+        gameRound: 1,
+        userTurn: 0,
+        word: "",
+        "canvasPionts.paintPlus": [],
         "users.socketId": [],
         "users.userNumber": [],
         "users.userName": [],

@@ -135,7 +135,7 @@ function sec90Timer() {
   sec90Interval = setInterval(timer, 1000);
 
   // Timer = 15 sec
-  let seconds = 5;
+  let seconds = 90;
 
   function timer() {
     if (seconds >= 0) {
@@ -208,7 +208,7 @@ export function ratePaint() {
   // Rate the paint
 
   // Timer = 15 sec
-  let seconds = 5;
+  let seconds = 15;
 
   function timer() {
     if (seconds >= 0) {
@@ -226,7 +226,7 @@ export function ratePaint() {
 
   function send10sec() {
     // Timer = 10 sec
-    let seconds2 = 5;
+    let seconds2 = 10;
 
     function timer10sec() {
       if (seconds2 >= 0) {
@@ -398,12 +398,12 @@ export function usersResume(
   userNumber,
   userColor
 ) {
-  const canvasPaint = document.querySelector(".canvasPaint");
-  canvasPaint.style.opacity = "0";
-  canvasPaint.style.pointerEvents = "none";
+  // const canvasPaint = document.querySelector(".canvasPaint");
+  // canvasPaint.style.opacity = "0";
+  // canvasPaint.style.pointerEvents = "none";
 
-  document.querySelector("#chooseWords").remove();
-  document.querySelector(".uselessRateBlock").remove();
+  // document.querySelector("#chooseWords").remove();
+  // document.querySelector(".uselessRateBlock").remove();
 
   const wallBlock = document.createElement("div");
   wallBlock.className = "wallBlock";

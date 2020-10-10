@@ -14,10 +14,8 @@ function socketNewPlayerPlayingAgain(socket, _id, userName, userColor) {
       if (checkIfHasAllreadySoftReseted == false) {
         softResetRoomForPlayAgain(_id);
         rejoinUser(socket, _id, 0, userName, userColor);
-        console.log("soft reset = false");
       } else {
         rejoinUser(socket, _id, -1, userName, userColor);
-        console.log("soft reset = true");
       }
     }
   });

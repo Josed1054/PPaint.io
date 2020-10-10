@@ -119,6 +119,27 @@ body {
   z-index: 150;
 }
 
+.startBtun {
+  border-radius: 1.5rem;
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  padding: 5% 0;
+  border: 3px solid #2b2c50;
+}
+
+.startBtun p {
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
+.waitBlock {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  text-align: center;
+}
+
 .startBtun:hover > p {
   color: white;
 }

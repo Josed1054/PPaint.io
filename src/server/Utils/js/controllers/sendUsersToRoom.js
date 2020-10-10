@@ -2,6 +2,7 @@ const { io } = require("../../../server");
 
 function sendUsersToRoom(
   _id,
+  sockets,
   numbers,
   users,
   colors,
@@ -9,13 +10,15 @@ function sendUsersToRoom(
   leaderNum,
   leaderName
 ) {
-  io.to(_id).emit("roomUsers", {
-    numbers: numbers,
-    users: users,
-    colors: colors,
-    points: points,
-    leaderNum: leaderNum,
-    leaderName: leaderName,
+  sockets.forEach((socket) => {
+    io.to(socket).emit("roomUsers", {
+      numbers,
+      users,
+      colors,
+      points,
+      leaderNum,
+      leaderName,
+    });
   });
 }
 
