@@ -192,7 +192,10 @@ export function leaderDiv(usersWaiting) {
 
   startBtun.appendChild(text);
 
-  document.querySelector(".startBlock").appendChild(startBtun);
+  const elementToAppend =
+    document.querySelector(".startBlock") ||
+    document.querySelector(".canvasDivs");
+  elementToAppend.appendChild(startBtun);
 }
 
 let oneTimeStartGame = false;
@@ -211,7 +214,10 @@ export function playerDiv(leaderName) {
 
   waitText.appendChild(text);
 
-  document.querySelector(".startBlock").appendChild(waitText);
+  const elementToAppend =
+    document.querySelector(".startBlock") ||
+    document.querySelector(".canvasDivs");
+  elementToAppend.appendChild(waitText);
 }
 
 export function setPainter(userNumberOfThePainter) {

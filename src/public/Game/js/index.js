@@ -108,12 +108,33 @@ socket.on("round", (gameRound) => {
 
 let oneStartGame = false;
 socket.on("startGame", () => {
-  if (oneStartGame == false) {
-    const startBlock = document.querySelector(".startBlock");
+  if (!oneStartGame) {
+    oneStartGame = true;
 
-    startBlock.remove();
+    oneUsersResume = true;
+    onePaintsResume = true;
 
-    return (oneStartGame = true);
+    const startBlock =
+      document.querySelector(".startBlock") ||
+      document.querySelector(".canvasDivs");
+
+    if (startBlock.attributes.class.nodeValue == "canvasDivs") {
+      const drawBlock = document.querySelector(".paintDiv");
+
+      if (drawBlock == null || drawBlock == undefined) {
+        startBlock.remove();
+        document.querySelector(".wallBlock").remove();
+        document.querySelector(".usersDiv").remove();
+      } else {
+        startBlock.remove();
+        document.querySelector(".wallBlock").remove();
+        document.querySelector(".usersDiv").remove();
+        document.querySelector(".paintPlate").remove();
+        document.querySelector(".paintDiv").remove();
+      }
+    } else {
+      startBlock.remove();
+    }
   }
 });
 
@@ -209,7 +230,7 @@ socket.on("allPlayersRigth", () => {
 let oneTimeRate = false;
 
 socket.on("rateCanvas", (canvasPainted, wordPainted) => {
-  if (oneTimeRate === false) {
+  if (!oneTimeRate) {
     rateCanvas(canvasPainted, wordPainted);
 
     return (oneTimeRate = true), (gameStatus = "ratingPaint");
@@ -218,7 +239,7 @@ socket.on("rateCanvas", (canvasPainted, wordPainted) => {
 
 let oneTimeSendRate = false;
 socket.on("sendRate", () => {
-  if (oneTimeSendRate == false) {
+  if (!oneTimeSendRate) {
     sendRate(_id, round);
 
     oneTimeSendRate = true;
@@ -337,6 +358,8 @@ export function emit10secNewMatch(seconds2) {
 
 export function emitPlayAgain() {
   socket.emit("newPlayerPlayingAgain", _id, userName, userColor);
+
+  oneStartGame = false;
 }
 // Game.js
 

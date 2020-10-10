@@ -41,7 +41,6 @@ function endOfTheMatch(socket, _id, end, absoluteUrl) {
                   },
                 }
               );
-              console.log("set softReset = false");
               sendResultsOfTheMatch(_id);
             } else if (userTurn == users.length - 1) {
               let gameRound1Plus = Number(gameRound + 1);
@@ -82,7 +81,6 @@ function endOfTheMatch(socket, _id, end, absoluteUrl) {
                   },
                 }
               );
-              console.log("set softReset = false");
               sendResultsOfTheMatch(_id);
             } else if (userTurn >= users.length - 1) {
               let userTurn0 = 0;

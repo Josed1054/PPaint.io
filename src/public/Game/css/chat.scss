@@ -114,6 +114,23 @@ body {
   }
 }
 
+.startBtun {
+  border-radius: 1.5rem;
+grid-column: 3/4;
+padding: 5% 0;
+border: 3px solid #2b2c50;
+
+  p {
+    border-radius: 1.5rem;
+text-align: center;
+  }
+}
+
+.waitBlock {
+  grid-column: 3/4;
+text-align: center;
+}
+
 .startBtun:hover > p {
   color: $whiteColor;
 }
