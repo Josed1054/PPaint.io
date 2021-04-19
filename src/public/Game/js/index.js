@@ -55,6 +55,30 @@ import {
   drawMovementUp,
 } from "./canvas.js";
 
+// CheckUser
+
+import {
+  checkUserData,
+  eraseUserData,
+  senUserToHome,
+} from "./userManagement.js";
+
+window.onload = checkUserData(room);
+
+window.addEventListener("beforeunload", function (e) {
+  eraseUserData();
+  // Cancel the event
+  e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+  // Chrome requires returnValue to be set
+  e.returnValue = "";
+});
+
+ifvisible.on("blur", function () {
+  senUserToHome();
+});
+
+// CheckUser
+
 socket.emit("joinRoom", {
   _id,
   room,
@@ -71,10 +95,6 @@ socket.on("userNumber", (number) => {
 
 innerCodeRoom(room, code);
 
-ifvisible.now("hidden", function () {
-  console.log("lol page hidden");
-});
-
 // Emit Url
 
 const url = window.location.href;
@@ -82,16 +102,9 @@ const arr = url.split("/");
 const result = arr[0] + "//" + arr[2];
 socket.emit("url", result);
 
-// Erro handleler
+// Error handleler
 socket.on("bruh", (bruh) => {
   alert(`${bruh}`);
-});
-
-window.addEventListener("beforeunload", function (e) {
-  // Cancel the event
-  e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-  // Chrome requires returnValue to be set
-  e.returnValue = "";
 });
 
 let gameStatus = "waiting Room";
@@ -191,6 +204,7 @@ socket.on(
 
 socket.on("newLeader", (newLeaderNum, newLeaderName) => {
   let leaderName = newLeaderName;
+
   newLeader(newLeaderNum, newLeaderName);
 
   if (newLeaderNum === userNumber) {
@@ -203,7 +217,7 @@ socket.on("newLeader", (newLeaderNum, newLeaderName) => {
 // Game
 
 socket.on("chooseWord", (word1, word2, word3) => {
-  chooseWords(word1, word2, word3, _id, userName, round);
+  chooseWords(word1, word2, word3, usersWaiting);
 });
 
 socket.on(
@@ -221,7 +235,9 @@ socket.on(
   }
 );
 
-window.addEventListener("resize", setCanvasSize);
+window.addEventListener("resize", () => {
+  setTimeout(setCanvasSize, 500);
+});
 
 socket.on("allPlayersRigth", () => {
   ratePaint();

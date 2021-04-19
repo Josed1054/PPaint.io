@@ -9,6 +9,9 @@ function socketChoosendWord(socket, _id, wordArray) {
       $set: {
         word: `${wordArray}`,
       },
+      $push: {
+        indexOfWords: wordArray,
+      },
     }
   );
 

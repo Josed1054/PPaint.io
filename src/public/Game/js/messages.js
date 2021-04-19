@@ -79,7 +79,9 @@ export function outputMessage(message, userColor) {
   const text = document.createElement("p");
   text.className = "text";
   text.innerText = `${message}`;
-  text.style.borderLeft = `0.5em solid rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)`;
+  text.style.borderLeft =
+    `0.5em solid rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)` ||
+    "0.5em solid rgba(0, 0, 0, 0.5)";
 
   $chatMessages.appendChild(text);
 

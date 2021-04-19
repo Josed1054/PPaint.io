@@ -49,54 +49,63 @@ canvasHeight = 400;
 const $divCanvasContainer = document.querySelector(".canvasContainer");
 const $canvasPlayer = document.querySelector("#canvasPlayer");
 
-const widhtWindow =
-  window.innerWidth ||
-  document.documentElement.clientWidth ||
-  document.body.clientWidth;
+let widhtWindow;
 
-setCanvasSize();
+setTimeout(setCanvasSize, 500);
 export function setCanvasSize() {
-  if (widhtWindow > 1000) {
-    let divWidth =
-      $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 9;
-    let divHeight =
-      $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 7;
+  widhtWindow =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
 
-    let xScale = divWidth / 500;
-    let yScale = divHeight / 400;
+  let divWidth = $divCanvasContainer.clientWidth / 1.2;
+  let divHeight = $divCanvasContainer.clientHeight / 1.3;
 
-    $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  } else if (widhtWindow > 800) {
-    let divWidth =
-      $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 14;
-    let divHeight =
-      $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 12;
+  let xScale = divWidth / 500;
+  let yScale = divHeight / 400;
 
-    let xScale = divWidth / 500;
-    let yScale = divHeight / 400;
+  $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
+  // if (widhtWindow > 1000) {
+  //   let divWidth =
+  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 9;
+  //   let divHeight =
+  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 7;
 
-    $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  } else if (widhtWindow > 500) {
-    let divWidth =
-      $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 18;
-    let divHeight =
-      $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 16;
+  //   let xScale = divWidth / 500;
+  //   let yScale = divHeight / 400;
 
-    let xScale = divWidth / 500;
-    let yScale = divHeight / 400;
+  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
+  // } else if (widhtWindow > 800) {
+  //   let divWidth =
+  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 8;
+  //   let divHeight =
+  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 6;
 
-    $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  } else {
-    let divWidth =
-      $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 50;
-    let divHeight =
-      $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 15;
+  //   let xScale = divWidth / 500;
+  //   let yScale = divHeight / 400;
 
-    let xScale = divWidth / 500;
-    let yScale = divHeight / 400;
+  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
+  // } else if (widhtWindow > 500) {
+  //   let divWidth =
+  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 12;
+  //   let divHeight =
+  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 2;
 
-    $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  }
+  //   let xScale = divWidth / 500;
+  //   let yScale = divHeight / 400;
+
+  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
+  // } else {
+  //   let divWidth =
+  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 2;
+  //   let divHeight =
+  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 4;
+
+  //   let xScale = divWidth / 500;
+  //   let yScale = divHeight / 400;
+
+  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
+  // }
 }
 
 export function drawing() {

@@ -13,6 +13,8 @@ function playingGame(_id, absoluteUrl) {
 
         let socketIdOfUser = docs[0].users.socketId[userTurn];
 
+        let arrayOfWords = docs[0].indexOfWords;
+
         let word1;
         let word2;
         let word3;
@@ -27,7 +29,6 @@ function playingGame(_id, absoluteUrl) {
             },
           }
         );
-
         updateRoomUsers(_id);
 
         async function sendWords() {
@@ -39,9 +40,12 @@ function playingGame(_id, absoluteUrl) {
 
             const rows = words.split("\n");
 
-            word1 = rows[Math.floor(Math.random() * 2881 + 1)];
-            word2 = rows[Math.floor(Math.random() * 2881 + 1)];
-            word3 = rows[Math.floor(Math.random() * 2881 + 1)];
+            let index1 = Math.floor(Math.random() * 2881 + 1);
+            let index2 = Math.floor(Math.random() * 2881 + 1);
+            let index3 = Math.floor(Math.random() * 2881 + 1);
+            word1 = rows[index1];
+            word2 = rows[index2];
+            word3 = rows[index3];
 
             if (
               word1 == null ||
@@ -56,7 +60,36 @@ function playingGame(_id, absoluteUrl) {
             ) {
               sendWords();
             } else {
-              io.to(socketIdOfUser).emit("chooseWord", word1, word2, word3);
+              word1 = word1.split("\r");
+              word2 = word2.split("\r");
+              word3 = word3.split("\r");
+
+              word1 = word1[0];
+              word2 = word2[0];
+              word3 = word3[0];
+
+              if (arrayOfWords.length == 0)
+                return io
+                  .to(socketIdOfUser)
+                  .emit("chooseWord", word1, word2, word3);
+              else {
+                arrayOfWords.forEach((word) => {
+                  if (word1 == word || word2 == word || word3 == word) {
+                    return sendWords();
+                  } else if (
+                    word == arrayOfWords[arrayOfWords.length - 1] &&
+                    word1 !== arrayOfWords[arrayOfWords.length - 1] &&
+                    word2 !== arrayOfWords[arrayOfWords.length - 1] &&
+                    word3 !== arrayOfWords[arrayOfWords.length - 1]
+                  ) {
+                    return io
+                      .to(socketIdOfUser)
+                      .emit("chooseWord", word1, word2, word3);
+                  } else {
+                    return sendWords();
+                  }
+                });
+              }
             }
           } catch (error) {
             console.log(error);

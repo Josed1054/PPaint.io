@@ -3,6 +3,7 @@ import { emitStarGame } from "./index.js";
 const roomUsersList = document.querySelector(".roomUsersList");
 
 export function innerCodeRoom(room, code) {
+  // add the possibility to hide the room name and code
   const roomName = document.querySelector(".roomName");
   const roomCode = document.querySelector(".roomCode");
 
@@ -225,6 +226,8 @@ export function setPainter(userNumberOfThePainter) {
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth;
+
+  oneTimeWait = false;
 
   if (widhtWindow > 800) {
     const usersInTheList = document.querySelectorAll(".usersPlaying");

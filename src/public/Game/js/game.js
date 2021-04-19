@@ -34,67 +34,80 @@ export function oneTime60SecFunc(seconds) {
   document.querySelector(".timerWords").innerText = `${seconds}`;
 }
 
-export function chooseWords(word1, word2, word3) {
-  let wordsArray = [word1, word2, word3];
+export function chooseWords(word1, word2, word3, usersWaiting) {
+  let seconds;
 
-  const wordsContainer = document.querySelector("#chooseWords");
-  wordsContainer.classList.remove("uselessWordContainer");
-  wordsContainer.className = "chooseWords";
-
-  // Timer = 15 sec
-  const timeWords = document.createElement("div");
-  timeWords.className = "timerWords";
-  wordsContainer.appendChild(timeWords);
-
-  let seconds = 15;
-
-  function timer() {
-    if (seconds >= 0) {
-      timeWords.innerText = `${seconds}`;
-      emit15secWord(seconds);
-      seconds -= 1;
-      if (seconds == -1) {
-        const wordArray = wordsArray[Math.floor(Math.random() * 3 + 1) - 1];
-        clearInterval(timer15Word);
-        playingGame(wordArray);
-      }
-    } else {
-      clearInterval(timer15Word);
-      const wordArray = wordsArray[Math.floor(Math.random() * 3 + 1) - 1];
-      playingGame(wordArray);
-    }
+  if (usersWaiting == 15) {
+    seconds = 8;
+    setWordsToUser(seconds);
+  } else if (usersWaiting >= 9) {
+    seconds = 10;
+    setWordsToUser(seconds);
+  } else {
+    seconds = 15;
+    setWordsToUser(seconds);
   }
 
-  const timer15Word = setInterval(timer, 1000);
-  // Timer = 15 sec
+  function setWordsToUser() {
+    let wordsArray = [word1, word2, word3];
 
-  const chooseWordsHeader = document.createElement("p");
-  chooseWordsHeader.className = "chooseWordsHeader";
-  chooseWordsHeader.innerText = "Choose the Word that you gonna draw";
+    const wordsContainer = document.querySelector("#chooseWords");
+    wordsContainer.classList.remove("uselessWordContainer");
+    wordsContainer.className = "chooseWords";
 
-  wordsContainer.appendChild(chooseWordsHeader);
+    // Timer = 15 sec
+    const timeWords = document.createElement("div");
+    timeWords.className = "timerWords";
+    wordsContainer.appendChild(timeWords);
 
-  const words = document.createElement("div");
-  words.className = "words";
+    function timer() {
+      if (seconds >= 0) {
+        timeWords.innerText = `${seconds}`;
+        emit15secWord(seconds);
+        seconds -= 1;
+        if (seconds == -1) {
+          const wordArray = wordsArray[Math.floor(Math.random() * 3 + 1) - 1];
+          clearInterval(timer15Word);
+          playingGame(wordArray, seconds);
+        }
+      } else {
+        clearInterval(timer15Word);
+        const wordArray = wordsArray[Math.floor(Math.random() * 3 + 1) - 1];
+        playingGame(wordArray, seconds);
+      }
+    }
 
-  let wordNum = 1;
+    const timer15Word = setInterval(timer, 1000);
+    // Timer = 15 sec
 
-  wordsArray.forEach((wordArray) => {
-    let paragraph = document.createElement("p");
-    paragraph.className = `wordNum${wordNum}`;
-    paragraph.innerText = `${wordArray}`;
-    paragraph.setAttribute("data-word", wordArray);
+    const chooseWordsHeader = document.createElement("p");
+    chooseWordsHeader.className = "chooseWordsHeader";
+    chooseWordsHeader.innerText = "Choose the Word that you gonna draw";
 
-    paragraph.addEventListener("click", () => {
-      clearInterval(timer15Word);
-      playingGame(wordArray);
+    wordsContainer.appendChild(chooseWordsHeader);
+
+    const words = document.createElement("div");
+    words.className = "words";
+
+    let wordNum = 1;
+
+    wordsArray.forEach((wordArray) => {
+      let paragraph = document.createElement("p");
+      paragraph.className = `wordNum${wordNum}`;
+      paragraph.innerText = `${wordArray}`;
+      paragraph.setAttribute("data-word", wordArray);
+
+      paragraph.addEventListener("click", () => {
+        clearInterval(timer15Word);
+        playingGame(wordArray, seconds);
+      });
+
+      words.appendChild(paragraph);
+      wordNum++;
     });
 
-    words.appendChild(paragraph);
-    wordNum++;
-  });
-
-  wordsContainer.appendChild(words);
+    wordsContainer.appendChild(words);
+  }
 }
 
 function playingGame(wordArray) {
@@ -153,8 +166,10 @@ function sec90Timer() {
   }
 }
 
+let previousIndex = [];
+
 function secBackSlash(wordArray) {
-  secSlashInterval = setInterval(changeBackSlash, 20000);
+  secSlashInterval = setInterval(changeBackSlash, 15000);
   let wordLength = wordArray.length;
 
   let varLength = wordArray.length - 1;
@@ -167,30 +182,42 @@ function secBackSlash(wordArray) {
   emitChoosendWord(wordArray);
   emitSecretChart(backSlash);
 
-  let previousIndex;
-
   function changeBackSlash() {
     let wordLengthDiv3 = wordLength / 3;
-    let ramdomIndex = Math.floor(Math.random() * wordLength);
-    let ramdomChar = wordArray[ramdomIndex];
+    let randomIndex = Math.floor(Math.random() * wordLength);
+    let randomChar = wordArray[randomIndex];
 
     if (varLength > wordLengthDiv3) {
-      if (previousIndex !== ramdomIndex) {
-        previousIndex = ramdomIndex;
+      if (previousIndex.length === 0) {
+        previousIndex.push(randomIndex);
 
         let res = backSlash.split(" ");
-        res.splice(ramdomIndex, 1, `${ramdomChar}`);
+        res.splice(randomIndex, 1, `${randomChar}`);
         backSlash = res.toString();
         backSlash = backSlash.replace(/,/gi, " ");
 
         emitSecretChart(backSlash);
 
         varLength--;
-      } else if (previousIndex == ramdomIndex) {
-        changeBackSlash();
+      } else {
+        previousIndex.forEach((index) => {
+          if (index === randomIndex) return changeBackSlash();
+          else {
+            previousIndex.push(randomIndex);
+            let res = backSlash.split(" ");
+            res.splice(randomIndex, 1, `${randomChar}`);
+            backSlash = res.toString();
+            backSlash = backSlash.replace(/,/gi, " ");
+
+            emitSecretChart(backSlash);
+
+            varLength--;
+          }
+        });
       }
     } else {
       clearInterval(secSlashInterval);
+      previousIndex.length = 0;
     }
   }
 }
@@ -200,6 +227,8 @@ export function ratePaint() {
 
   clearInterval(sec90Interval);
   clearInterval(secSlashInterval);
+  previousIndex.length = 0;
+
   document.querySelector(".strokesWidths").remove();
   document.querySelector(".colors").remove();
 

@@ -33,11 +33,12 @@ function socketMessage(
 
           let msgLower = msg.toLowerCase();
 
-          let ifTheWordHasUnderScore =  secretWord.indexOf(`${msgLower}`);
+          let ifTheWordHasUnderScore = secretWord.indexOf(`${msgLower}`);
 
-          console.log(ifTheWordHasUnderScore, secretWord);
-
-          if (ifTheWordHasUnderScore === 0) {
+          if (
+            ifTheWordHasUnderScore === 0 &&
+            secretWord.length === msg.length
+          ) {
             io.to(socket.id).emit("disableChat");
 
             io.in(_id).emit("message", `${userName} got it`, userColor);

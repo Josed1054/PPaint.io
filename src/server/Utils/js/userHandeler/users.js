@@ -41,6 +41,9 @@ function createRoom(_id, Room, Code) {
       $set: {
         "canvasPionts.paintPlus": [],
       },
+      $set: {
+        indexOfWords: [],
+      },
     }
   );
 

@@ -24,31 +24,23 @@ const { socketDisconnect } = require("./socketDisconnect");
 let absoluteUrl;
 
 function socketIndex(socket) {
-  socket.on("joinRoom", function ({
-    _id,
-    room,
-    code,
-    userNumber,
-    userName,
-    userColor,
-  }) {
-    socketJoinRoom(socket, _id, room, code, userNumber, userName, userColor);
-  });
+  socket.on(
+    "joinRoom",
+    function ({ _id, room, code, userNumber, userName, userColor }) {
+      socketJoinRoom(socket, _id, room, code, userNumber, userName, userColor);
+    }
+  );
 
   socket.on("url", (result) => {
     absoluteUrl = result;
   });
 
-  socket.on("chatMessage", function (
-    msg,
-    _id,
-    gameStatus,
-    msgTime,
-    userName,
-    userColor
-  ) {
-    socketMessage(socket, msg, _id, gameStatus, msgTime, userName, userColor);
-  });
+  socket.on(
+    "chatMessage",
+    function (msg, _id, gameStatus, msgTime, userName, userColor) {
+      socketMessage(socket, msg, _id, gameStatus, msgTime, userName, userColor);
+    }
+  );
 
   socket.on("startGame", function (_id) {
     socketStartGame(_id);
@@ -76,17 +68,9 @@ function socketIndex(socket) {
     socketSecretChart(socket, _id, backSlash);
   });
 
-  socket.on("canvasXY", function (
-    canvasAction,
-    loc,
-    strokesColorEmit,
-    strokesWidthEmit,
-    _id,
-    userName,
-    userColor
-  ) {
-    socketCanvasXY(
-      socket,
+  socket.on(
+    "canvasXY",
+    function (
       canvasAction,
       loc,
       strokesColorEmit,
@@ -94,17 +78,26 @@ function socketIndex(socket) {
       _id,
       userName,
       userColor
-    );
-  });
+    ) {
+      socketCanvasXY(
+        socket,
+        canvasAction,
+        loc,
+        strokesColorEmit,
+        strokesWidthEmit,
+        _id,
+        userName,
+        userColor
+      );
+    }
+  );
 
-  socket.on("canvasPainted", function (
-    _id,
-    userName,
-    userColor,
-    canvasPainted
-  ) {
-    socketCanvasPainted(_id, userName, userColor, canvasPainted);
-  });
+  socket.on(
+    "canvasPainted",
+    function (_id, userName, userColor, canvasPainted) {
+      socketCanvasPainted(_id, userName, userColor, canvasPainted);
+    }
+  );
 
   socket.on("15secRate", function (_id, round, seconds) {
     socket15secRate(_id, round, seconds);
