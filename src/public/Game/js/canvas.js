@@ -387,7 +387,7 @@ function ReactToTouchUp(e) {
 
 // Proyect what others user paint
 
-export function drawMoventDown(loc, strokesColorEmit, strokesWidthEmit) {
+export function drawMovementDown(loc, strokesColorEmit, strokesWidthEmit) {
   context.strokeStyle = strokesColorEmit;
   context.lineWidth = strokesWidthEmit;
 

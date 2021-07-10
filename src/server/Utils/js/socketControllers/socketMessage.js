@@ -58,7 +58,7 @@ function socketMessage(
 
             if (usersRightPlusOne == arrayDeIds.length - 1) {
               let userTurn = docs[0].userTurn;
-              io.to(arrayDeIds[userTurn]).emit("allPlayersRigth");
+              io.to(arrayDeIds[userTurn]).emit("allPlayersRight");
             }
 
             spliceScore();

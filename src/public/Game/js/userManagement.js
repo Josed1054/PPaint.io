@@ -10,6 +10,6 @@ export function eraseUserData() {
   sessionStorage.setItem("code", null);
 }
 
-export function senUserToHome() {
+export function sendUserToHome() {
   window.location.replace("./");
 }

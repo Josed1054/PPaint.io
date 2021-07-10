@@ -50,17 +50,16 @@ import {
 import {
   eraseCanvas,
   setCanvasSize,
-  drawMoventDown,
+  drawMovementDown,
   drawMovementMove,
   drawMovementUp,
 } from "./canvas.js";
 
 // CheckUser
-
 import {
   checkUserData,
   eraseUserData,
-  senUserToHome,
+  sendUserToHome,
 } from "./userManagement.js";
 
 window.onload = checkUserData(room);
@@ -74,7 +73,7 @@ window.addEventListener("beforeunload", function (e) {
 });
 
 ifvisible.on("blur", function () {
-  senUserToHome();
+  sendUserToHome();
 });
 
 // CheckUser
@@ -107,6 +106,7 @@ socket.on("bruh", (bruh) => {
   alert(`${bruh}`);
 });
 
+// !! here I need the server to tell us in what status is actually the game
 let gameStatus = "waiting Room";
 let msgTime;
 
@@ -119,6 +119,7 @@ socket.on("round", (gameRound) => {
   innerGameRound(gameRound);
 });
 
+// !! here I need to fix the way the game starts, the server should do this
 let oneStartGame = false;
 socket.on("startGame", () => {
   if (!oneStartGame) {
@@ -202,6 +203,7 @@ socket.on(
   }
 );
 
+// ?? here I think this need to be change, but I´m not secure
 socket.on("newLeader", (newLeaderNum, newLeaderName) => {
   let leaderName = newLeaderName;
 
@@ -224,7 +226,7 @@ socket.on(
   "canvasXYs",
   (canvasAction, loc, userName, userColor, colorSet, line_Width) => {
     if (canvasAction == "canvasDown") {
-      drawMoventDown(loc, userName, userColor, colorSet, line_Width);
+      drawMovementDown(loc, userName, userColor, colorSet, line_Width);
     } else if (canvasAction == "canvasMove") {
       drawMovementMove(loc, userName, userColor, colorSet, line_Width);
     } else if (canvasAction == "canvasUp") {
@@ -239,10 +241,12 @@ window.addEventListener("resize", () => {
   setTimeout(setCanvasSize, 500);
 });
 
-socket.on("allPlayersRigth", () => {
+socket.on("allPlayersRight", () => {
   ratePaint();
 });
 
+// ?? I need to figure out a way to do
+// ?? the onTimeRate from the server and not from the client
 let oneTimeRate = false;
 
 socket.on("rateCanvas", (canvasPainted, wordPainted) => {
@@ -253,6 +257,8 @@ socket.on("rateCanvas", (canvasPainted, wordPainted) => {
   }
 });
 
+// ?? I need to figure out a way to do
+// ?? the onTimeRate from the server and not from the client
 let oneTimeSendRate = false;
 socket.on("sendRate", () => {
   if (!oneTimeSendRate) {
@@ -281,6 +287,8 @@ socket.on("eraseRate", () => {
   document.querySelector(".timerWords").style.border = "none";
   document.querySelector(".secondsP").innerText = "";
 
+  // ?? I need to figure out a way to do
+  // ?? the onTimeRate from the server and not from the client
   oneTimeRate = false;
   oneTimeSendRate = false;
 });
@@ -293,6 +301,8 @@ socket.on("continueCounting10sec", () => {
   continueCounting10sec();
 });
 
+// ?? I need to figure out a way to do
+// ?? the onTimeRate from the server and not from the client
 let oneUsersResume = true;
 socket.on("usersResume", (numbers, users, colors, points) => {
   if (oneUsersResume)
@@ -300,6 +310,8 @@ socket.on("usersResume", (numbers, users, colors, points) => {
       (oneUsersResume = false);
 });
 
+// ?? I need to figure out a way to do
+// ?? the onTimeRate from the server and not from the client
 let onePaintsResume = true;
 socket.on("paintsResume", (canvas, users, colors, points, words) => {
   if (onePaintsResume)

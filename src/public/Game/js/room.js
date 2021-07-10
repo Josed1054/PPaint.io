@@ -25,6 +25,7 @@ export function innerGameRound(gameRound) {
   actualRound.innerText = `Round: ${gameRound}/3`;
 }
 
+// !! I need to fix this, the server needs to do this
 // Add users to DOM
 let oneTimeWait = false;
 let twoTimeWait = false;
@@ -62,6 +63,7 @@ export function outputUsers(
     document.documentElement.clientWidth ||
     document.body.clientWidth;
 
+  // !! I need to fix this, the server needs to do this
   firstOutputUsers = true;
   // Check if Him is the leader
   leader();
@@ -98,6 +100,7 @@ export function outputUsers(
       const rgb = hexToRgb(user.color);
 
       function hexToRgb(hex) {
+        // todo I need to do this function one not twice
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, function (m, r, g, b) {
@@ -128,6 +131,7 @@ export function outputUsers(
       const rgb = hexToRgb(user.color);
 
       function hexToRgb(hex) {
+        // todo I need to do this function one not twice
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, function (r, g, b) {
@@ -167,6 +171,8 @@ export function outputUsers(
   }
 }
 
+// !! I need to fix this, the server needs to do this
+
 function eraseUsers() {
   if (firstOutputUsers == true) {
     while (roomUsersList.firstChild)
@@ -177,12 +183,14 @@ function eraseUsers() {
 export function newLeader(newLeaderNum, newLeaderName) {
   const elimnWaitBlock = document.querySelector(".waitBlock");
 
+  // !! I need to fix this, the server needs to do this
   elimnWaitBlock.remove();
 }
 
 export function leaderDiv(usersWaiting) {
   const startBtun = document.createElement("div");
   startBtun.className = "startBtun";
+  // !! I need to fix this, the server needs to do this
 
   startBtun.addEventListener("click", function () {
     startGameBtun();
@@ -199,6 +207,8 @@ export function leaderDiv(usersWaiting) {
   elementToAppend.appendChild(startBtun);
 }
 
+// !! I need to fix this, the server needs to do this
+
 let oneTimeStartGame = false;
 function startGameBtun() {
   if (oneTimeStartGame === false) {
@@ -206,6 +216,7 @@ function startGameBtun() {
   }
 }
 
+// !! I need to fix this, the server needs to do this
 export function playerDiv(leaderName) {
   const waitText = document.createElement("div");
   waitText.className = "waitBlock";
@@ -227,6 +238,7 @@ export function setPainter(userNumberOfThePainter) {
     document.documentElement.clientWidth ||
     document.body.clientWidth;
 
+  // !! I need to fix this, the server needs to do this
   oneTimeWait = false;
 
   if (widhtWindow > 800) {

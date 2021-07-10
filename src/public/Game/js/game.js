@@ -13,7 +13,7 @@ import {
   emitPlayAgain,
 } from "./index.js";
 
-const mesageInput = document.querySelector(".msg-input");
+const messageInput = document.querySelector(".msg-input");
 const messageBtun = document.querySelector(".btn");
 
 const $toolsContainer = document.querySelector(".toolsContainer");
@@ -52,6 +52,7 @@ export function chooseWords(word1, word2, word3, usersWaiting) {
     let wordsArray = [word1, word2, word3];
 
     const wordsContainer = document.querySelector("#chooseWords");
+    // !! I need to change this to make the server do this
     wordsContainer.classList.remove("uselessWordContainer");
     wordsContainer.className = "chooseWords";
 
@@ -113,8 +114,8 @@ export function chooseWords(word1, word2, word3, usersWaiting) {
 function playingGame(wordArray) {
   // Erase Chat
   emitEraseChat();
-  mesageInput.value = "";
-  mesageInput.disabled = true;
+  messageInput.value = "";
+  messageInput.disabled = true;
   messageBtun.disabled = true;
 
   sec90Timer();
@@ -122,6 +123,7 @@ function playingGame(wordArray) {
 
   // Get rid of the words chooser
 
+  // !! I need to remove the Word Container not just change the class
   const wordsContainer = document.querySelector("#chooseWords");
   wordsContainer.classList.remove("chooseWords");
   wordsContainer.classList.add("uselessWordContainer");
@@ -275,6 +277,7 @@ export function ratePaint() {
 
 let rate = 1;
 
+// !! I need to change this
 const $rateContainer = document.querySelector(".uselessRateContainer");
 
 const word = document.createElement("p");
@@ -285,9 +288,10 @@ export function rateCanvas(canvasPainted, wordPainted) {
   eraseCanvas();
   secretWord.innerText = "Word:";
 
-  mesageInput.disabled = false;
+  messageInput.disabled = false;
   messageBtun.disabled = false;
 
+  // !! I need to change this
   const rateBlock = document.querySelector(".uselessRateBlock");
   rateBlock.className = "rateBlock";
 
@@ -335,6 +339,7 @@ function fillStar(starValue) {
   rate = spliced[spliced.length - 1];
 }
 
+// !! I need to change this
 let secondsP2 = document.createElement("p");
 secondsP2.className = "secondsP";
 const constRateContainer =
@@ -346,6 +351,7 @@ export function rateContainer(seconds) {
   secondsP2.innerText = `${seconds}`;
 }
 
+// !! I need to change this
 export function sendRate() {
   document.querySelector(".starsContainer").className = "uselessStarsContainer";
 
