@@ -33,6 +33,7 @@ function socketMessage(
 
           let msgLower = msg.toLowerCase();
 
+
           let ifTheWordHasUnderScore = secretWord.indexOf(`${msgLower}`);
 
           if (

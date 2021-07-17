@@ -94,6 +94,10 @@ socket.on("userNumber", (number) => {
 
 innerCodeRoom(room, code);
 
+ifvisible.now("hidden", function () {
+  console.log("lol page hidden");
+});
+
 // Emit Url
 
 const url = window.location.href;

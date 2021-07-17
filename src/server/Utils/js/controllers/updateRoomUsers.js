@@ -98,6 +98,7 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
         } else if (gameStatus == "Final") {
           io.to(_id).emit("startGame");
           sendResultsOfTheMatch(_id);
+        } else if (gameStatus == "") {
         }
       } catch (error) {
         console.log(error);
