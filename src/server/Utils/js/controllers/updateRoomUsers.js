@@ -57,6 +57,8 @@ function updateRoomUsers(_id, newLeaderNum, newLeaderName) {
           io.to(_id).emit("startGame");
           sendUsersToRoom(_id, sockets, numbers, users, colors, points);
           io.to(_id).emit("userPainting", userNumberOfThePainter);
+
+          // Get Painting
         } else if (gameStatus == "ratingPaint") {
           io.in(_id).emit("round", gameRound);
           io.to(_id).emit("startGame");

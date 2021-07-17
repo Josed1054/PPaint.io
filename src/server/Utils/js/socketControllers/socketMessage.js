@@ -33,11 +33,13 @@ function socketMessage(
 
           let msgLower = msg.toLowerCase();
 
-          let ifTheWordHasUnderScore =  secretWord.indexOf(`${msgLower}`);
 
-          console.log(ifTheWordHasUnderScore, secretWord);
+          let ifTheWordHasUnderScore = secretWord.indexOf(`${msgLower}`);
 
-          if (ifTheWordHasUnderScore === 0) {
+          if (
+            ifTheWordHasUnderScore === 0 &&
+            secretWord.length === msg.length
+          ) {
             io.to(socket.id).emit("disableChat");
 
             io.in(_id).emit("message", `${userName} got it`, userColor);
@@ -57,7 +59,7 @@ function socketMessage(
 
             if (usersRightPlusOne == arrayDeIds.length - 1) {
               let userTurn = docs[0].userTurn;
-              io.to(arrayDeIds[userTurn]).emit("allPlayersRigth");
+              io.to(arrayDeIds[userTurn]).emit("allPlayersRight");
             }
 
             spliceScore();

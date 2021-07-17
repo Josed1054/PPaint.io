@@ -40,7 +40,7 @@ const colors = [
   "#6CAE75",
   "#33CA7F",
 ];
-let colorIndex = 0;
+let colorIndex = Math.floor(Math.random() * 9 + 1) - 1;
 
 let selectedColor = colors[colorIndex];
 

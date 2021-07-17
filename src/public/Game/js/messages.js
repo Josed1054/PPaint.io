@@ -45,9 +45,9 @@ function clearSpaces(value) {
   return value;
 }
 
-const mesageInput = document.querySelector(".msg-input");
-mesageInput.setAttribute("disabled", "disabled");
-mesageInput.disabled = false;
+const messageInput = document.querySelector(".msg-input");
+messageInput.setAttribute("disabled", "disabled");
+messageInput.disabled = false;
 
 const messageBtun = document.querySelector(".btn");
 messageBtun.setAttribute("disabled", "disabled");
@@ -79,7 +79,9 @@ export function outputMessage(message, userColor) {
   const text = document.createElement("p");
   text.className = "text";
   text.innerText = `${message}`;
-  text.style.borderLeft = `0.5em solid rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)`;
+  text.style.borderLeft =
+    `0.5em solid rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)` ||
+    "0.5em solid rgba(0, 0, 0, 0.5)";
 
   $chatMessages.appendChild(text);
 
@@ -106,7 +108,7 @@ export function outputMessageWord(userName, seconds) {
 }
 
 export function disableInputChat() {
-  mesageInput.value = "";
-  mesageInput.disabled = true;
+  messageInput.value = "";
+  messageInput.disabled = true;
   messageBtun.disabled = true;
 }

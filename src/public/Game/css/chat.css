@@ -99,6 +99,7 @@ body {
   cursor: pointer;
   max-width: 300px;
   max-height: 300px;
+  border: none;
 }
 
 .startBlock .startBtun > p {
