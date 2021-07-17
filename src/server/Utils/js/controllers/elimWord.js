@@ -9,8 +9,8 @@ function elimnWord(_id) {
         let words = docs[0].paint.words;
         let wordsLastChar = docs[0].paint.words.length - 1;
 
-        retunrWordsArray();
-        function retunrWordsArray() {
+        returnWordsArray();
+        function returnWordsArray() {
           words.splice(wordsLastChar, 1);
 
           databaseRooms.update(

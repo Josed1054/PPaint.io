@@ -6,7 +6,7 @@ const { socketMessage } = require("./socketMessage");
 const { socketStartGame } = require("./socketStartGame");
 const { socket15secWord } = require("./socket15secWord");
 const { socketEraseChat } = require("./socketEraseChat");
-const { socketChoosendWord } = require("./socketChoosendWord");
+const { socketChosenWord } = require("./socketChosenWord");
 const { socket60sec } = require("./socket60sec");
 const { socketSecretChart } = require("./socketSecretChart");
 const { socketCanvasXY } = require("./socketCanvasXY");
@@ -56,8 +56,8 @@ function socketIndex(socket) {
     socketEraseChat(_id);
   });
 
-  socket.on("choosendWord", function (_id, wordArray) {
-    socketChoosendWord(socket, _id, wordArray);
+  socket.on("chosenWord", function (_id, wordArray) {
+    socketChosenWord(socket, _id, wordArray);
   });
 
   socket.on("60sec", function (_id, seconds) {

@@ -1,7 +1,7 @@
 import { drawing, eraseCanvas, removeCanvasEvLi } from "./canvas.js";
 import {
   emit15secWord,
-  emitChoosendWord,
+  emitChosenWord,
   emitEraseChat,
   emitSecretChart,
   emit60sec,
@@ -48,7 +48,7 @@ export function chooseWords(word1, word2, word3, usersWaiting) {
     setWordsToUser(seconds);
   }
 
-  function setWordsToUser() {
+  function setWordsToUser(seconds) {
     let wordsArray = [word1, word2, word3];
 
     const wordsContainer = document.querySelector("#chooseWords");
@@ -110,7 +110,6 @@ export function chooseWords(word1, word2, word3, usersWaiting) {
     wordsContainer.appendChild(words);
   }
 }
-
 function playingGame(wordArray) {
   // Erase Chat
   emitEraseChat();
@@ -181,7 +180,7 @@ function secBackSlash(wordArray) {
   backSlash = backSlash.replace(/[ ]{2,}/gi, " ");
   backSlash = backSlash.replace(/\n /, "\n");
 
-  emitChoosendWord(wordArray);
+  emitChosenWord(wordArray);
   emitSecretChart(backSlash);
 
   function changeBackSlash() {

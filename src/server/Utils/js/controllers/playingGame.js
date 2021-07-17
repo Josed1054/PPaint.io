@@ -68,11 +68,12 @@ function playingGame(_id, absoluteUrl) {
               word2 = word2[0];
               word3 = word3[0];
 
-              if (arrayOfWords.length == 0)
+              //  arrayOfWords, socketIdOfUser, word1, word2, word3
+              if (arrayOfWords.length == 0) {
                 return io
                   .to(socketIdOfUser)
                   .emit("chooseWord", word1, word2, word3);
-              else {
+              } else {
                 arrayOfWords.forEach((word) => {
                   if (word1 == word || word2 == word || word3 == word) {
                     return sendWords();
@@ -85,8 +86,6 @@ function playingGame(_id, absoluteUrl) {
                     return io
                       .to(socketIdOfUser)
                       .emit("chooseWord", word1, word2, word3);
-                  } else {
-                    return sendWords();
                   }
                 });
               }

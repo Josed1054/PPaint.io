@@ -1,6 +1,6 @@
 const { databaseRooms, databaseUsers } = require("../userHandeler/users");
 
-function socketChoosendWord(socket, _id, wordArray) {
+function socketChosenWord(socket, _id, wordArray) {
   socket.broadcast.to(_id).emit("clear15secWord");
 
   databaseUsers.update(
@@ -29,5 +29,5 @@ function socketChoosendWord(socket, _id, wordArray) {
 }
 
 module.exports = {
-  socketChoosendWord,
+  socketChosenWord,
 };

@@ -346,8 +346,8 @@ export function emit15secWord(seconds) {
   socket.emit("15secWord", _id, userName, seconds, userColor);
 }
 
-export function emitChoosendWord(wordArray) {
-  socket.emit("choosendWord", _id, wordArray);
+export function emitChosenWord(wordArray) {
+  socket.emit("chosenWord", _id, wordArray);
 }
 
 export function emitEraseChat() {

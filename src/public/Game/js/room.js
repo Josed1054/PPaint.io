@@ -58,7 +58,7 @@ export function outputUsers(
     return b.points - a.points;
   });
 
-  const widhtWindow =
+  const widthWindow =
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth;
@@ -93,7 +93,7 @@ export function outputUsers(
 
   let position = 1;
 
-  if (widhtWindow < 800) {
+  if (widthWindow < 800) {
     const usersArray3 = usersArray.slice(0, 3);
 
     usersArray3.forEach((user) => {
@@ -233,7 +233,7 @@ export function playerDiv(leaderName) {
 }
 
 export function setPainter(userNumberOfThePainter) {
-  const widhtWindow =
+  const widthWindow =
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth;
@@ -241,7 +241,7 @@ export function setPainter(userNumberOfThePainter) {
   // !! I need to fix this, the server needs to do this
   oneTimeWait = false;
 
-  if (widhtWindow > 800) {
+  if (widthWindow > 800) {
     const usersInTheList = document.querySelectorAll(".usersPlaying");
 
     usersInTheList.forEach((user) => {

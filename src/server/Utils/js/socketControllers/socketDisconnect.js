@@ -45,7 +45,7 @@ function socketDisconnect(socket, socketId, absoluteUrl) {
           }
         );
 
-        retunrColorsArray(elArray);
+        returnColorsArray(elArray);
 
         checkIfIsAnUserBef();
         function checkIfIsAnUserBef() {
@@ -64,7 +64,7 @@ function socketDisconnect(socket, socketId, absoluteUrl) {
           }
         }
 
-        function retunrColorsArray(elArray) {
+        function returnColorsArray(elArray) {
           if (elArray > -1) {
             userNames.splice(elArray, 1);
             userColors.splice(elArray, 1);

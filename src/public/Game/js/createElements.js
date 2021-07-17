@@ -1,4 +1,4 @@
-export class newElemnt {
+export class newElement {
   constructor(clsNm, element, father, inner) {
     this.clsNm = clsNm;
     this.element = element;

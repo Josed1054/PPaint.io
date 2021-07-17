@@ -1,7 +1,5 @@
 import { sendLocCanvas, emitCanvasPainted } from "./index.js";
-import { newElemnt } from "./createElements.js";
-
-let oneTimeRezise = false;
+import { newElement } from "./createElements.js";
 
 const canvas = document.querySelector("#canvasPlayer");
 const context = canvas.getContext("2d");
@@ -49,11 +47,11 @@ canvasHeight = 400;
 const $divCanvasContainer = document.querySelector(".canvasContainer");
 const $canvasPlayer = document.querySelector("#canvasPlayer");
 
-let widhtWindow;
+let widthWindow;
 
 setTimeout(setCanvasSize, 500);
 export function setCanvasSize() {
-  widhtWindow =
+  widthWindow =
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth;
@@ -65,47 +63,6 @@ export function setCanvasSize() {
   let yScale = divHeight / 400;
 
   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  // if (widhtWindow > 1000) {
-  //   let divWidth =
-  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 9;
-  //   let divHeight =
-  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 7;
-
-  //   let xScale = divWidth / 500;
-  //   let yScale = divHeight / 400;
-
-  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  // } else if (widhtWindow > 800) {
-  //   let divWidth =
-  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 8;
-  //   let divHeight =
-  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 6;
-
-  //   let xScale = divWidth / 500;
-  //   let yScale = divHeight / 400;
-
-  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  // } else if (widhtWindow > 500) {
-  //   let divWidth =
-  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 12;
-  //   let divHeight =
-  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 2;
-
-  //   let xScale = divWidth / 500;
-  //   let yScale = divHeight / 400;
-
-  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  // } else {
-  //   let divWidth =
-  //     $divCanvasContainer.clientWidth - $divCanvasContainer.clientWidth / 2;
-  //   let divHeight =
-  //     $divCanvasContainer.clientHeight - $divCanvasContainer.clientHeight / 4;
-
-  //   let xScale = divWidth / 500;
-  //   let yScale = divHeight / 400;
-
-  //   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
-  // }
 }
 
 export function drawing() {
@@ -147,22 +104,22 @@ function createTools() {
   // Create Tools
   let widthsArray = [3, 6, 9, 12];
 
-  let strokesWidthsCls = new newElemnt(
+  let strokesWidthsCls = new newElement(
     "strokesWidths",
     "div",
     ".toolsContainer"
   );
   strokesWidthsCls.addElement();
 
-  let strokeTextCls = new newElemnt(
-    "StorkeP",
+  let strokeTextCls = new newElement(
+    "StrokeP",
     "p",
     ".strokesWidths",
-    "Storke:"
+    "Stroke:"
   );
   strokeTextCls.addElementAndInnerText();
 
-  let toolsCls = new newElemnt("tools", "div", ".strokesWidths");
+  let toolsCls = new newElement("tools", "div", ".strokesWidths");
   toolsCls.addElement();
 
   widthsArray.forEach((width) => {
@@ -198,16 +155,16 @@ function createColors() {
     "yellow",
     "green",
   ];
-  let colorsCls = new newElemnt("colors", "div", ".toolsContainer");
+  let colorsCls = new newElement("colors", "div", ".toolsContainer");
   colorsCls.addElement();
 
-  let colorsTextCls = new newElemnt("ColorsP", "p", ".colors", "Colors:");
+  let colorsTextCls = new newElement("ColorsP", "p", ".colors", "Colors:");
   colorsTextCls.addElementAndInnerText();
 
-  let colorsDivCls = new newElemnt("colorsDiv", "div", ".colors");
+  let colorsDivCls = new newElement("colorsDiv", "div", ".colors");
   colorsDivCls.addElement();
 
-  let newCanvasIconCls = new newElemnt(
+  let newCanvasIconCls = new newElement(
     "eraseCanvas",
     "p",
     ".colorsDiv",
@@ -385,7 +342,7 @@ function ReactToTouchUp(e) {
   e.preventDefault(e);
 }
 
-// Proyect what others user paint
+// Project what others user paint
 
 export function drawMovementDown(loc, strokesColorEmit, strokesWidthEmit) {
   context.strokeStyle = strokesColorEmit;
