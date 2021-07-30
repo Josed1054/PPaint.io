@@ -5,8 +5,14 @@
     "Colorblack",
     "Divs",
     "Eventslisteners",
+    "canva",
     "ifvisible",
+    "ppaint",
     "sumed",
     "uslss"
-  ]
+  ],
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "editor.tabSize": 2
 }

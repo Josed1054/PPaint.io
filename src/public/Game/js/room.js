@@ -30,7 +30,68 @@ export function innerGameRound(gameRound) {
 let oneTimeWait = false;
 let twoTimeWait = false;
 
+// !! I need to fix this, the server needs to do this
+
+// !! I need to fix this, the server needs to do this
+
+function startGameBtun() {
+  emitStarGame();
+}
+
 let firstOutputUsers = false;
+
+export function leaderDiv(usersWaiting) {
+  const startBtun = document.createElement("div");
+  startBtun.className = "startBtun";
+  // !! I need to fix this, the server needs to do this
+
+  startBtun.addEventListener("click", function () {
+    startGameBtun();
+  });
+
+  const text = document.createElement("p");
+  text.innerText = `Start Game. Players: ${usersWaiting}`;
+
+  startBtun.appendChild(text);
+
+  const elementToAppend =
+    document.querySelector(".startBlock") ||
+    document.querySelector(".canvasDivs");
+  elementToAppend.appendChild(startBtun);
+}
+
+function eraseUsers() {
+  if (firstOutputUsers === true) {
+    while (roomUsersList.firstChild)
+      roomUsersList.removeChild(roomUsersList.firstChild);
+  }
+}
+
+// !! I need to fix this, the server needs to do this
+export function playerDiv(leaderName) {
+  const waitText = document.createElement("div");
+  waitText.className = "waitBlock";
+
+  const text = document.createElement("p");
+  text.innerText = `Waiting for: ${leaderName} to start the game`;
+
+  waitText.appendChild(text);
+
+  const elementToAppend =
+    document.querySelector(".startBlock") ||
+    document.querySelector(".canvasDivs");
+  elementToAppend.appendChild(waitText);
+}
+
+function search(nameKey, myArray, userNumber) {
+  for (let i = 0; i < myArray.length; i += 1) {
+    if (myArray[i].number === nameKey) {
+      const myPlayer = document.querySelector(`.PlayerNumber${userNumber}`);
+      myPlayer.style.background = "rgba(168,220,209,0.2)";
+    }
+  }
+}
+
 export function outputUsers(
   numbers,
   users,
@@ -43,13 +104,13 @@ export function outputUsers(
 ) {
   eraseUsers();
 
-  let usersArray = [];
-  for (let index = 0; index <= numbers.length - 1; index++) {
-    let user = {};
-    user["number"] = numbers[index];
-    user["user"] = users[index];
-    user["color"] = colors[index];
-    user["points"] = points[index];
+  const usersArray = [];
+  for (let index = 0; index <= numbers.length - 1; index += 1) {
+    const user = {};
+    user.number = numbers[index];
+    user.user = users[index];
+    user.color = colors[index];
+    user.points = points[index];
 
     usersArray.push(user);
   }
@@ -66,7 +127,6 @@ export function outputUsers(
   // !! I need to fix this, the server needs to do this
   firstOutputUsers = true;
   // Check if Him is the leader
-  leader();
   function leader() {
     if (leaderNum !== undefined) {
       if (leaderNum === userNumber) {
@@ -91,23 +151,23 @@ export function outputUsers(
     }
   }
 
+  leader();
+
   let position = 1;
 
   if (widthWindow < 800) {
     const usersArray3 = usersArray.slice(0, 3);
 
     usersArray3.forEach((user) => {
-      const rgb = hexToRgb(user.color);
-
       function hexToRgb(hex) {
         // todo I need to do this function one not twice
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-        let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        const newHex = hex.replace(shorthandRegex, function (m, r, g, b) {
           return r + r + g + g + b + b;
         });
 
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(newHex);
         return result
           ? {
               r: parseInt(result[1], 16),
@@ -116,6 +176,8 @@ export function outputUsers(
             }
           : null;
       }
+
+      const rgb = hexToRgb(user.color);
 
       const userAllAtribiutes = document.createElement("p");
       userAllAtribiutes.className = `Position${position} PlayerNumber${user.number}`;
@@ -124,21 +186,19 @@ export function outputUsers(
 
       roomUsersList.appendChild(userAllAtribiutes);
 
-      position++;
+      position += 1;
     });
   } else {
     usersArray.forEach((user) => {
-      const rgb = hexToRgb(user.color);
-
       function hexToRgb(hex) {
         // todo I need to do this function one not twice
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-        let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function (r, g, b) {
+        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        const newHex = hex.replace(shorthandRegex, function (r, g, b) {
           return r + r + g + g + b + b;
         });
 
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(newHex);
         return result
           ? {
               r: parseInt(result[1], 16),
@@ -147,6 +207,8 @@ export function outputUsers(
             }
           : null;
       }
+
+      const rgb = hexToRgb(user.color);
 
       const userAllAtribiutes = document.createElement("p");
       userAllAtribiutes.setAttribute("number", `${user.number}`);
@@ -156,80 +218,18 @@ export function outputUsers(
 
       roomUsersList.appendChild(userAllAtribiutes);
 
-      position++;
+      position += 1;
     });
 
-    search(userNumber, usersArray);
-    function search(nameKey, myArray) {
-      for (var i = 0; i < myArray.length; i++) {
-        if (myArray[i].number == nameKey) {
-          const myPlayer = document.querySelector(`.PlayerNumber${userNumber}`);
-          myPlayer.style.background = "rgba(168,220,209,0.2)";
-        }
-      }
-    }
+    search(userNumber, usersArray, userNumber);
   }
 }
 
-// !! I need to fix this, the server needs to do this
-
-function eraseUsers() {
-  if (firstOutputUsers == true) {
-    while (roomUsersList.firstChild)
-      roomUsersList.removeChild(roomUsersList.firstChild);
-  }
-}
-
-export function newLeader(newLeaderNum, newLeaderName) {
+export function newLeader() {
   const elimnWaitBlock = document.querySelector(".waitBlock");
 
   // !! I need to fix this, the server needs to do this
   elimnWaitBlock.remove();
-}
-
-export function leaderDiv(usersWaiting) {
-  const startBtun = document.createElement("div");
-  startBtun.className = "startBtun";
-  // !! I need to fix this, the server needs to do this
-
-  startBtun.addEventListener("click", function () {
-    startGameBtun();
-  });
-
-  const text = document.createElement("p");
-  text.innerText = `Start Game. Players: ${usersWaiting}`;
-
-  startBtun.appendChild(text);
-
-  const elementToAppend =
-    document.querySelector(".startBlock") ||
-    document.querySelector(".canvasDivs");
-  elementToAppend.appendChild(startBtun);
-}
-
-// !! I need to fix this, the server needs to do this
-
-let oneTimeStartGame = false;
-function startGameBtun() {
-  if (oneTimeStartGame === false) {
-    emitStarGame();
-  }
-}
-
-// !! I need to fix this, the server needs to do this
-export function playerDiv(leaderName) {
-  const waitText = document.createElement("div");
-  waitText.className = "waitBlock";
-
-  const text = document.createElement("p");
-  text.innerText = `Waiting for: ${leaderName} to start the game`;
-
-  waitText.appendChild(text);
-
-  const elementToAppend =
-    document.querySelector(".startBlock") ||
-    document.querySelector(".canvasDivs");
-  elementToAppend.appendChild(waitText);
 }
 
 export function setPainter(userNumberOfThePainter) {
@@ -245,9 +245,9 @@ export function setPainter(userNumberOfThePainter) {
     const usersInTheList = document.querySelectorAll(".usersPlaying");
 
     usersInTheList.forEach((user) => {
-      let userNumber = user.getAttribute("number");
+      const userNumber = user.getAttribute("number");
 
-      if (userNumber == userNumberOfThePainter) {
+      if (userNumber === userNumberOfThePainter) {
         const pincelImg = document.createElement("img");
         pincelImg.className = "pincelImg";
         pincelImg.src = "/src/public/Game/pincel/pincel.png";

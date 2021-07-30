@@ -1,32 +1,7 @@
+import { domSelectors } from "./styles.js";
+
 const colorProfile = document.querySelector(".color-one");
-
-const $paintSvg = document.querySelectorAll(".paintSvg");
-
-const $smilsad = document.querySelectorAll(".smilsad");
-
-const $pathC = document.querySelectorAll(".pathC");
-const $path1 = document.querySelector(".path1");
-const $path2 = document.querySelector(".path2");
-const $path3 = document.querySelector(".path3");
-const $path4 = document.querySelector(".path4");
-const $path5 = document.querySelector(".path5");
-
-const $pathFace = document.querySelectorAll(".eyes");
-const $pathFaceEye1 = document.querySelector(".eye1");
-const $pathFaceEye2 = document.querySelector(".eye2");
-
-const $pathAbstract = document.querySelectorAll(".abstract");
-const $pathTriangle = document.querySelector(".triangle");
-const $pathStar = document.querySelector(".star");
-const $pathLoop = document.querySelector(".loop");
-const $pathWave = document.querySelector(".wave");
-
-const $drip = document.querySelectorAll(".drip");
-const $drip1 = document.querySelector(".drip1");
-const $drip2 = document.querySelector(".drip2");
 const $point = document.querySelector(".point");
-
-window.addEventListener("keyup", domSelectors);
 
 const colors = [
   "#2b2c50",
@@ -48,116 +23,77 @@ colorProfile.style.backgroundColor = `${colors[colorIndex]}`;
 
 $point.setAttribute("fill", `${colors[colorIndex]}`);
 
-colorProfile.addEventListener("click", changeColor);
+document.addEventListener("keydown", domSelectors);
 
-function changeColor(e) {
+function changeColor() {
   domSelectors();
-
   if (colorIndex === colors.length - 1) {
     colorIndex = 0;
     colorProfile.style.backgroundColor = `${colors[0]}`;
     $point.setAttribute("fill", `${colors[0]}`);
   } else {
-    colorIndex++;
+    colorIndex += 1;
     colorProfile.style.backgroundColor = `${colors[colorIndex]}`;
     $point.setAttribute("fill", `${colors[colorIndex]}`);
   }
   selectedColor = colors[colorIndex];
 }
 
-domSelectors();
-function domSelectors() {
-  let variableSmilsad = ["rotate", "top", "left", "scale"];
-  let variableTool = ["rotate", "bottom", "right", "scale"];
-  let variableFace = ["rotate", "bottom", "left", "scale"];
-  let variablePaint = ["rotate", "top", "right", "scale"];
+colorProfile.addEventListener("click", changeColor);
 
-  setCssProps(
-    "smilsadFace",
-    variableSmilsad[Math.floor(Math.random() * 4 + 1 - 1)]
-  );
-  setCssProps("paintTool", variableTool[Math.floor(Math.random() * 4 + 1 - 1)]);
-  setCssProps("svgFace", variableFace[Math.floor(Math.random() * 4 + 1 - 1)]);
-  setCssProps(
-    "abstractPaint",
-    variablePaint[Math.floor(Math.random() * 4 + 1 - 1)]
-  );
+const btnJoin = document.querySelector(".btnJoin");
+const btnCreate = document.querySelector(".btnCreate");
 
-  $smilsad.forEach((sms) => {
-    sms.setAttribute(
-      "fill",
-      `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-    );
-  });
+const $userName = document.getElementById("username");
+const $joinRoomName = document.getElementById("joinRoomName");
+const $joinRoomCode = document.getElementById("joinRoomCode");
+const $createRoomName = document.getElementById("createRoomName");
+const $createRoomCode = document.getElementById("createRoomCode");
 
-  $drip1.setAttribute(
-    "fill",
-    `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-  );
-  $drip2.setAttribute(
-    "fill",
-    `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-  );
+const inputs = [
+  $userName,
+  $joinRoomName,
+  $joinRoomCode,
+  $createRoomName,
+  $createRoomCode,
+];
 
-  $pathC.forEach((path) => {
-    path.setAttribute(
-      "fill",
-      `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-    );
-  });
+function setCharLimit(input) {
+  const maxLength = 8;
 
-  $pathFace.forEach((eye) => {
-    eye.setAttribute(
-      "fill",
-      `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-    );
-  });
-
-  $pathAbstract.forEach((abs) => {
-    abs.setAttribute(
-      "fill",
-      `${colors[Math.floor(Math.random() * 9 + 1 - 1)]}`
-    );
-  });
-}
-
-function setCssProps(element, variable) {
-  if (variable == "rotate") {
-    document.querySelector(
-      `.${element}`
-    ).style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
-  } else if (variable == "top") {
-    document.querySelector(`.${element}`).style.top = `${Math.floor(
-      Math.random() * 20
-    )}%`;
-  } else if (variable == "bottom") {
-    document.querySelector(`.${element}`).style.bottom = `${Math.floor(
-      Math.random() * 20
-    )}%`;
-  } else if (variable == "left") {
-    document.querySelector(`.${element}`).style.left = `${Math.floor(
-      Math.random() * 20
-    )}%`;
-  } else if (variable == "right") {
-    document.querySelector(`.${element}`).style.right = `${Math.floor(
-      Math.random() * 20
-    )}%`;
-  } else if (variable == "scale") {
-    let scales = [0.5, 0.6, 0.8, 0.9, 1, 1.1];
-
-    document.querySelector(`.${element}`).style.transform = `scale(${
-      scales[Math.floor(Math.random() * 6 + 1 - 1)]
-    })`;
+  if (input.value.length > maxLength) {
+    input.value = input.value.substring(0, maxLength);
   }
 }
 
+function clearSpaces(value) {
+  let newValue;
+  newValue = value.replace(/[ ]{2,}/gi, " ");
+  newValue = value.replace(/(^\s*)|(\s*$)/gi, "");
+  newValue = value.replace(/\n /, "\n");
+  return newValue;
+}
+
+inputs.forEach((input) => {
+  input.addEventListener("keyup", () => {
+    setCharLimit(input);
+    input.value = input.value.replace(/[^\w\s]/gi, "");
+    input.value = clearSpaces(input.value);
+  });
+});
+
+const labelJoin = document.querySelector(".labelJoin");
 const dropDownJoin = document.querySelector(".dropDownJoin");
 const joinInputs = document.querySelectorAll(".joinInput");
+
+const labelCreate = document.querySelector(".labelCreate");
 const dropDownCreate = document.querySelector(".dropDownCreate");
 const createInputs = document.querySelectorAll(".createInput");
 
-const labelJoin = document.querySelector(".labelJoin");
-const labelCreate = document.querySelector(".labelCreate");
+const drop = [labelJoin, dropDownJoin, labelCreate, dropDownCreate];
+
+let join = "close";
+let create = "close";
 
 function clearJoin() {
   joinInputs.forEach((joinInput) => {
@@ -189,201 +125,132 @@ function addCreate() {
   document.querySelector(".createRoomName").focus();
 }
 
-clearJoin();
-clearCreate();
-
-let dropValue = "opened";
-let dropValue2 = "opened";
-
-labelJoin.addEventListener("click", (e) => {
-  clear2();
-  clickJoin();
-});
-dropDownJoin.addEventListener("click", (e) => {
-  clear2();
-  clickJoin();
-});
-
-labelCreate.addEventListener("click", (e) => {
-  clear1();
-  clickCreate();
-});
-dropDownCreate.addEventListener("click", (e) => {
-  clear1();
-  clickCreate();
-});
-
-function clickJoin() {
-  if (dropValue == "closed") {
-    dropDownJoin.style.transform = `rotate(360deg)`;
+function joinFunction() {
+  if (join === "open") {
     clearJoin();
-    return (dropValue = "opened");
-  }
-  if (dropValue == "opened") {
-    dropDownJoin.style.transform = `rotate(180deg)`;
+    join = "close";
+    dropDownJoin.style.transform = "rotate(360deg)";
+  } else {
     addJoin();
-    return (dropValue = "closed");
-  }
-}
+    join = "open";
+    dropDownJoin.style.transform = "rotate(180deg)";
 
-function clickCreate() {
-  if (dropValue2 == "closed") {
-    dropDownCreate.style.transform = `rotate(360deg)`;
-    clearCreate();
-    return (dropValue2 = "opened");
-  }
-  if (dropValue2 == "opened") {
-    dropDownCreate.style.transform = `rotate(180deg)`;
-    addCreate();
-    return (dropValue2 = "closed");
-  }
-}
-
-function clear1() {
-  if (dropValue && dropValue2)
-    clearJoin(),
-      (dropValue = "opened"),
-      (dropDownJoin.style.transform = `rotate(360deg)`);
-}
-
-function clear2() {
-  if (dropValue && dropValue2)
-    clearCreate(),
-      (dropValue2 = "opened"),
-      (dropDownCreate.style.transform = `rotate(360deg)`);
-}
-
-const userName = document.getElementById("username");
-userName.addEventListener("keyup", function () {
-  setCharLimit(userName);
-});
-
-const btnJoin = document.querySelector(".btnJoin");
-const btnCreate = document.querySelector(".btnCreate");
-
-const joinRoomNameInput = document.getElementById("joinRoomName");
-joinRoomNameInput.addEventListener("keyup", function () {
-  setCharLimit(joinRoomNameInput);
-});
-const joinRoomCodeInput = document.getElementById("joinRoomCode");
-joinRoomCodeInput.addEventListener("keyup", function () {
-  setCharLimit(joinRoomCodeInput);
-});
-const createRoomNameInput = document.getElementById("createRoomName");
-createRoomNameInput.addEventListener("keyup", function () {
-  setCharLimit(createRoomNameInput);
-});
-const createRoomCodeInput = document.getElementById("createRoomCode");
-createRoomCodeInput.addEventListener("keyup", function () {
-  setCharLimit(createRoomCodeInput);
-});
-
-function setCharLimit(input) {
-  let maxLength = 8;
-
-  if (input.value.length > maxLength) {
-    input.value = input.value.substring(0, maxLength);
-  }
-}
-
-let userNameValue;
-let joinRoomName;
-let joinRoomCode;
-let createRoomName;
-let createRoomCode;
-
-let btnGender;
-
-let alreadyOpened = false;
-
-document.addEventListener("keydown", (e) => {
-  if (e.keyCode === 13) {
-    if (!alreadyOpened) {
-      if (dropValue == "opened" && dropValue2 == "opened") {
-        clear2();
-        clickJoin();
-      } else {
-        if (dropValue == "closed") {
-          sendJoin();
-        } else if (dropValue2 == "closed") {
-          sendCreate();
-        }
-      }
+    if (create === "open") {
+      clearCreate();
+      create = "close";
+      dropDownCreate.style.transform = "rotate(360deg)";
     }
   }
-});
+}
 
-btnJoin.addEventListener("click", sendJoin);
-
-function sendJoin() {
-  userNameValue = userName.value;
-  const joinRoomNameValue = document.getElementById("joinRoomName").value;
-  const joinRoomCodeValue = document.getElementById("joinRoomCode").value;
-
-  if (
-    userNameValue === "" ||
-    joinRoomNameValue === "" ||
-    joinRoomCodeValue === ""
-  ) {
-    return alertSquare("Empty Fields");
+function createFunction() {
+  if (create === "open") {
+    clearCreate();
+    create = "close";
+    dropDownCreate.style.transform = "rotate(360deg)";
   } else {
-    btnJoin.setAttribute("disabled", "disabled");
-    blockInputs();
+    addCreate();
+    create = "open";
+    dropDownCreate.style.transform = "rotate(180deg)";
 
-    btnGender = "join";
-
-    joinRoomCode = clearSpaces(joinRoomCodeValue);
-    joinRoomName = clearSpaces(joinRoomNameValue);
-
-    sendJoinData();
+    if (join === "open") {
+      clearJoin();
+      join = "close";
+      dropDownJoin.style.transform = "rotate(360deg)";
+    }
   }
 }
 
-btnCreate.addEventListener("click", sendCreate);
+drop.forEach((element) => {
+  element.addEventListener("click", () => {
+    domSelectors();
 
-function sendCreate() {
-  userNameValue = userName.value;
-  const createRoomNameValue = document.getElementById("createRoomName").value;
-  const createRoomCodeValue = document.getElementById("createRoomCode").value;
+    const elementData = element.getAttribute("data-type");
 
-  if (
-    userNameValue === "" ||
-    createRoomNameValue === "" ||
-    createRoomCodeValue === ""
-  ) {
-    return alertSquare("Empty Fields");
-  } else {
-    btnCreate.setAttribute("disabled", "disabled");
-    blockInputs();
+    if (elementData === "join") {
+      joinFunction();
+    } else {
+      createFunction();
+    }
+  });
+});
 
-    btnGender = "create";
+function resetInputs() {
+  $userName.disabled = false;
+  $joinRoomName.disabled = false;
+  $joinRoomCode.disabled = false;
+  $createRoomName.disabled = false;
+  $createRoomCode.disabled = false;
 
-    createRoomName = clearSpaces(createRoomNameValue);
-    createRoomCode = clearSpaces(createRoomCodeValue);
-    sendJoinData();
+  $userName.value = "";
+  $joinRoomName.value = "";
+  $joinRoomCode.value = "";
+  $createRoomName.value = "";
+  $createRoomCode.value = "";
+}
+
+let alert = "close";
+
+function removeAlert() {
+  if (alert === "open") {
+    alert = "close";
+    document.querySelector(".alertBlock").remove();
+    document.querySelector(".alertDiv").remove();
   }
+}
+
+function alertSquare(status) {
+  const alertBlock = document.createElement("div");
+  alertBlock.className = "alertBlock";
+  alertBlock.addEventListener("click", removeAlert);
+  document.body.appendChild(alertBlock);
+
+  const alertDiv = document.createElement("div");
+  alertDiv.className = "alertDiv";
+  const alertText = document.createElement("p");
+  alertText.innerText = `${status}`;
+  alertDiv.appendChild(alertText);
+  const alertBtun = document.createElement("p");
+  alertBtun.className = "alertBtun";
+  alertBtun.innerText = "Ok";
+  alertBtun.addEventListener("click", () => {
+    if (alert === "open") {
+      removeAlert();
+    }
+  });
+  document.addEventListener("keyup", (e) => {
+    if (e.keyCode === 13 || e.keyCode === 9) {
+      if (alert === "open") {
+        removeAlert();
+      }
+    }
+  });
+  alertDiv.appendChild(alertBtun);
+
+  document.body.appendChild(alertDiv);
+
+  setTimeout(() => {
+    alert = "open";
+  }, 500);
 }
 
 function blockInputs() {
-  userName.disabled = true;
-  joinRoomNameInput.disabled = true;
-  joinRoomCodeInput.disabled = true;
-  createRoomNameInput.disabled = true;
-  createRoomCodeInput.disabled = true;
+  $userName.disabled = true;
+  $joinRoomName.disabled = true;
+  $joinRoomCode.disabled = true;
+  $createRoomName.disabled = true;
+  $createRoomCode.disabled = true;
 }
 
-function clearSpaces(value) {
-  (value = value.replace(/[ ]{2,}/gi, " ")),
-    (value = value.replace(/(^\s*)|(\s*$)/gi, "")),
-    (value = value.replace(/\n /, "\n"));
-  return value;
-}
-
-async function sendJoinData() {
-  userNameValue = clearSpaces(userNameValue);
-
+async function sendJoinData({
+  inputType,
+  joinRoomName,
+  joinRoomCode,
+  createRoomName,
+  createRoomCode,
+}) {
   const dataJoin = {
-    btnGender,
+    inputType,
     joinRoomName,
     joinRoomCode,
     createRoomName,
@@ -400,65 +267,118 @@ async function sendJoinData() {
   const response = await fetch("/Join", options);
   const json = await response.json();
 
-  if (json.status == "Room Found") {
+  if (json.status === "Room Found") {
     document.RoomForm.submit();
-    setTimeout(resetInputs, 5000);
     sessionStorage.setItem("userColor", `${selectedColor}`);
-    sessionStorage.setItem("userName", `${userNameValue}`);
+    sessionStorage.setItem("userName", `${$userName.value}`);
     sessionStorage.setItem("userNumber", -1);
-    sessionStorage.setItem("room", `${joinRoomName}`);
-    sessionStorage.setItem("code", `${joinRoomCode}`);
-  }
-  if (json.status == "No Room Found")
-    alertSquare(json.status),
-      btnJoin.removeAttribute("disabled"),
-      resetInputs();
-  if (json.status == "Room Created") {
+    sessionStorage.setItem("room", `${$joinRoomName.value}`);
+    sessionStorage.setItem("code", `${$joinRoomCode.value}`);
+  } else if (json.status === "No Room Found") {
+    alertSquare(json.status);
+    btnJoin.removeAttribute("disabled");
+    resetInputs();
+  } else if (json.status === "Room Created") {
     document.RoomForm.submit();
-    setTimeout(resetInputs, 5000);
     sessionStorage.setItem("userColor", `${selectedColor}`);
-    sessionStorage.setItem("userName", `${userNameValue}`);
+    sessionStorage.setItem("userName", `${$userName.value}`);
     sessionStorage.setItem("userNumber", 0);
-    sessionStorage.setItem("room", `${createRoomName}`);
-    sessionStorage.setItem("code", `${createRoomCode}`);
+    sessionStorage.setItem("room", `${$createRoomName.value}`);
+    sessionStorage.setItem("code", `${$createRoomCode.value}`);
+  } else if (json.status === "Room Already Created") {
+    alertSquare(json.status);
+    resetInputs();
+    btnCreate.removeAttribute("disabled");
+  } else if (json.status === "No data") {
+    alertSquare(json.status);
+    resetInputs();
+    btnCreate.removeAttribute("disabled");
   }
-  if (json.status == "Room Already Created")
-    alertSquare(json.status),
-      btnCreate.removeAttribute("disabled"),
-      resetInputs();
 }
 
-function resetInputs() {
-  userName.disabled = false;
-  joinRoomNameInput.disabled = false;
-  joinRoomCodeInput.disabled = false;
-  createRoomNameInput.disabled = false;
-  createRoomCodeInput.disabled = false;
+function sendJoin() {
+  if (
+    $userName.value === "" ||
+    $joinRoomName.value === "" ||
+    $joinRoomCode.value === ""
+  ) {
+    alertSquare("Empty Fields");
+  } else {
+    btnJoin.setAttribute("disabled", "disabled");
+    blockInputs();
+
+    sendJoinData({
+      inputType: "join",
+      joinRoomName: `${$joinRoomName.value}`,
+      joinRoomCode: `${$joinRoomCode.value}`,
+    });
+  }
 }
 
-function alertSquare(status) {
-  alreadyOpened = true;
-  const alertBlock = document.createElement("div");
-  alertBlock.className = "alertBlock";
-  alertBlock.addEventListener("click", removeAlert);
-  document.body.appendChild(alertBlock);
+function sendCreate() {
+  if (
+    $userName.value === "" ||
+    $createRoomName.value === "" ||
+    $createRoomCode.value === ""
+  ) {
+    alertSquare("Empty Fields");
+  } else {
+    btnCreate.setAttribute("disabled", "disabled");
+    blockInputs();
 
-  const alertDiv = document.createElement("div");
-  alertDiv.className = "alertDiv";
-  const alertText = document.createElement("p");
-  alertText.innerText = `${status}`;
-  alertDiv.appendChild(alertText);
-  const alertBtun = document.createElement("p");
-  alertBtun.className = "alertBtun";
-  alertBtun.innerText = "Ok";
-  alertBtun.addEventListener("click", removeAlert);
-  alertDiv.appendChild(alertBtun);
-
-  document.body.appendChild(alertDiv);
+    sendJoinData({
+      inputType: "create",
+      createRoomName: `${$createRoomName.value}`,
+      createRoomCode: `${$createRoomCode.value}`,
+    });
+  }
 }
 
-function removeAlert() {
-  document.querySelector(".alertBlock").remove();
-  document.querySelector(".alertDiv").remove();
-  alreadyOpened = false;
-}
+btnJoin.addEventListener("click", sendJoin);
+
+btnCreate.addEventListener("click", sendCreate);
+
+document.addEventListener("keydown", (e) => {
+  if (e.keyCode === 13 || e.keyCode === 9) {
+    e.preventDefault();
+
+    if ($userName.value.length === 0) {
+      $userName.focus();
+    } else if (
+      join === "close" &&
+      $createRoomName.value.length === 0 &&
+      $createRoomCode.value.length === 0
+    ) {
+      joinFunction();
+    } else if (
+      $joinRoomName.value.length > 0 &&
+      $joinRoomCode.value.length === 0
+    ) {
+      $joinRoomCode.focus();
+    } else if ($joinRoomCode.value.length > 0) {
+      sendJoinData({
+        inputType: "join",
+        joinRoomName: `${$joinRoomName.value}`,
+        joinRoomCode: `${$joinRoomCode.value}`,
+      });
+    } else if (
+      create === "close" &&
+      join === "open" &&
+      $joinRoomName.value.length === 0 &&
+      $joinRoomCode.value.length === 0
+    ) {
+      createFunction();
+    } else if (
+      $createRoomName.value.length > 0 &&
+      $createRoomCode.value.length === 0
+    ) {
+      $createRoomCode.focus();
+    } else if ($createRoomCode.value.length > 0) {
+      sendJoinData({
+        inputType: "create",
+        createRoomName: `${$createRoomName.value}`,
+        createRoomCode: `${$createRoomCode.value}`,
+      });
+    }
+  }
+});

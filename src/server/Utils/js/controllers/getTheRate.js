@@ -1,21 +1,34 @@
 const { io } = require("../../../server");
 const { databaseRooms, databaseUsers } = require("../userHandeler/users");
-const { updateRoomUsers } = require("../controllers/updateRoomUsers");
+const { updateRoomUsers } = require("./updateRoomUsers");
+
+function spliceScore(_id, userTurn, scores, newPainterScore) {
+  if (userTurn > -1) {
+    scores.splice(userTurn, 1, newPainterScore);
+
+    databaseUsers.update(
+      { _id: `${_id}` },
+      {
+        $set: {
+          "users.userPoints": scores,
+        },
+      }
+    );
+  }
+}
 
 function getTheRate(_id, action) {
   databaseUsers.find({ _id: `${_id}` }, (err, docs) => {
-    if (docs[0] == null) {
-      return err;
-    } else {
+    if (docs[0] != null && docs[0] !== undefined) {
       try {
         if (action === true) {
-          let rates = docs[0].canvasPionts.paintPlus;
-          let usersRating = docs[0].users.userNumber.length;
+          const rates = docs[0].canvasPionts.paintPlus;
+          const usersRating = docs[0].users.userNumber.length;
 
           let rateCero = 0;
 
           rates.forEach((rate) => {
-            rateCero = rateCero + rate;
+            rateCero += rate;
           });
 
           let sumedPoints = rateCero / usersRating;
@@ -34,39 +47,25 @@ function getTheRate(_id, action) {
 
           databaseRooms.persistence.compactDatafile();
         } else if (action === false) {
-          let userTurn = docs[0].userTurn;
-          let rates = docs[0].canvasPionts.paintPlus;
-          let usersRating = docs[0].users.userNumber.length;
+          const { userTurn } = docs[0];
+          const rates = docs[0].canvasPionts.paintPlus;
+          const usersRating = docs[0].users.userNumber.length;
 
           let rateCero = 0;
 
           rates.forEach((rate) => {
-            rateCero = rateCero + rate;
+            rateCero += rate;
           });
 
           let sumedPoints = rateCero / usersRating;
           sumedPoints = Number(`${sumedPoints.toFixed(0)}`);
 
-          let scores = docs[0].users.userPoints;
-          let painterScore = docs[0].users.userPoints[userTurn];
+          const scores = docs[0].users.userPoints;
+          const painterScore = docs[0].users.userPoints[userTurn];
 
-          let newPainterScore = painterScore + sumedPoints;
+          const newPainterScore = painterScore + sumedPoints;
 
-          spliceScore();
-          function spliceScore() {
-            if (userTurn > -1) {
-              scores.splice(userTurn, 1, newPainterScore);
-
-              databaseUsers.update(
-                { _id: `${_id}` },
-                {
-                  $set: {
-                    "users.userPoints": scores,
-                  },
-                }
-              );
-            }
-          }
+          spliceScore(_id, userTurn, scores, newPainterScore);
 
           databaseUsers.persistence.compactDatafile();
 
@@ -88,6 +87,8 @@ function getTheRate(_id, action) {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      return err;
     }
   });
 }

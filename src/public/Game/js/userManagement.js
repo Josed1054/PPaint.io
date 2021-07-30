@@ -1,5 +1,6 @@
 export function checkUserData(room) {
-  if (room == null || room == "null") window.location.replace("./");
+  if (room == null || room === undefined || room === "null")
+    window.location.replace("./");
 }
 
 export function eraseUserData() {

@@ -3,9 +3,9 @@ const { databaseUsers } = require("../userHandeler/users");
 const { endOfTheMatch } = require("../controllers/endOfTheMatch");
 
 function socket10secNewMatch(socket, _id, seconds, absoluteUrl) {
-  if (seconds == 0) {
+  if (seconds === 0) {
     io.in(_id).emit("eraseRate");
-    let end = "forced";
+    const end = "forced";
 
     databaseUsers.update(
       { _id: `${_id}` },

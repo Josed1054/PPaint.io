@@ -37,11 +37,7 @@ function createRoom(_id, Room, Code) {
         "users.userName": [],
         "users.userColor": [],
         "users.userPoints": [],
-      },
-      $set: {
         "canvasPionts.paintPlus": [],
-      },
-      $set: {
         indexOfWords: [],
       },
     }

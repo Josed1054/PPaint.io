@@ -1,11 +1,14 @@
 {
-  "name": "PPaint.io",
+  "name": "ppaint.io",
   "version": "1.0.1",
   "description": "Paint and guess with friends",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server/server.js",
-    "devStart": "nodemon src/server/server.js"
+    "start": "cross-env NODE_ENV=development node src/server/server.js",
+    "devStart": "cross-env NODE_ENV=production nodemon src/server/server.js",
+    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test:watch": "npm run test -- --watch",
+    "eslint": "eslint ."
   },
   "author": "PP",
   "license": "ISC",
@@ -13,11 +16,47 @@
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "ifvisible.js": "^1.0.6",
-    "nedb": "^1.8.0",
-    "node-fetch": "^2.6.0",
-    "socket.io": "^2.3.0"
+    "node-fetch": "^2.6.1",
+    "peerdeps": "^1.1.1",
+    "socket.io": "^2.4.1",
+    "nedb": "1.8.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-wesbos": "^1.0.1",
+    "eslint-plugin-html": "^6.1.2",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.3.2",
+    "supertest": "^6.1.3"
+  },
+  "eslintConfig": {
+    "extends": "wesbos",
+    "rules": {
+      "quotes": [
+        0,
+        "double"
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "trailingComma": "es5",
+          "semi": true,
+          "endOfLine": "auto"
+        }
+      ]
+    }
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

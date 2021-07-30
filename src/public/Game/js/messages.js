@@ -13,15 +13,23 @@ const chatForm = document.querySelector("#chat-form");
 
 const $msgInput = document.querySelector(".msg-input");
 
-$msgInput.addEventListener("keyup", function () {
-  setCharLimit($msgInput);
-});
 function setCharLimit(input) {
-  let maxLength = 25;
+  const maxLength = 25;
 
   if (input.value.length > maxLength) {
     input.value = input.value.substring(0, maxLength);
   }
+}
+
+$msgInput.addEventListener("keyup", () => {
+  setCharLimit($msgInput);
+});
+
+function clearSpaces(value) {
+  let newValue = value.replace(/[ ]{2,}/gi, " ");
+  newValue = value.replace(/(^\s*)|(\s*$)/gi, "");
+  newValue = value.replace(/\n /, "\n");
+  return newValue;
 }
 
 chatForm.addEventListener("submit", (e) => {
@@ -38,13 +46,6 @@ chatForm.addEventListener("submit", (e) => {
   e.target.elements.msg.focus();
 });
 
-function clearSpaces(value) {
-  (value = value.replace(/[ ]{2,}/gi, " ")),
-    (value = value.replace(/(^\s*)|(\s*$)/gi, "")),
-    (value = value.replace(/\n /, "\n"));
-  return value;
-}
-
 const messageInput = document.querySelector(".msg-input");
 messageInput.setAttribute("disabled", "disabled");
 messageInput.disabled = false;
@@ -57,16 +58,14 @@ messageBtun.disabled = false;
 export function outputMessage(message, userColor) {
   const $chatMessages = document.querySelector(".chatMessages");
 
-  const rgb = hexToRgb(userColor);
-
   function hexToRgb(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function (r, g, b) {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const newHex = hex.replace(shorthandRegex, function (r, g, b) {
       return r + r + g + g + b + b;
     });
 
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(newHex);
     return result
       ? {
           r: parseInt(result[1], 16),
@@ -75,6 +74,8 @@ export function outputMessage(message, userColor) {
         }
       : null;
   }
+
+  const rgb = hexToRgb(userColor);
 
   const text = document.createElement("p");
   text.className = "text";

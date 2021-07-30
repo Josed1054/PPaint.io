@@ -3,7 +3,7 @@ const { getTheRate } = require("../controllers/getTheRate");
 const { databaseUsers } = require("../userHandeler/users");
 
 function socket15secNewRate(_id, seconds) {
-  if (seconds == 0) {
+  if (seconds === 0) {
     databaseUsers.update(
       { _id: `${_id}` },
       {
@@ -17,7 +17,7 @@ function socket15secNewRate(_id, seconds) {
 
     io.in(_id).emit("sendRate");
     setTimeout(function () {
-      let notPlus = true;
+      const notPlus = true;
       getTheRate(_id, notPlus);
     }, 2000);
   }

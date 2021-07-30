@@ -5,106 +5,102 @@ const { elimnWord } = require("../controllers/elimWord");
 const { erraseRoom } = require("../controllers/erraseRoom");
 const { updateRoomUsers } = require("../controllers/updateRoomUsers");
 
+function checkIfIsAnUserBef(_id, userNumber, numTurn, userTurn) {
+  if (userNumber < numTurn) {
+    const userTurn1Less = Number(userTurn) - 1;
+    databaseUsers.update(
+      { _id: `${_id}` },
+      {
+        $set: {
+          userTurn: userTurn1Less,
+        },
+      }
+    );
+  }
+}
+
+function returnColorsArray(_id, elArray, userNames, userColors, userPoints) {
+  if (elArray > -1) {
+    databaseUsers.update(
+      { _id: `${_id}` },
+      {
+        $set: {
+          "users.userName": userNames,
+          "users.userColor": userColors,
+          "users.userPoints": userPoints,
+        },
+      }
+    );
+
+    databaseUsers.persistence.compactDatafile();
+  }
+}
+
 function socketDisconnect(socket, socketId, absoluteUrl) {
   databaseUsers.find({ "users.socketId": `${socketId}` }, (err, docs) => {
-    if (docs[0] == null) {
-      socket.emit("bruh", "connection error, please relogin");
-      return err;
-    }
-
-    if (docs[0] !== null) {
+    if (docs[0] != null && docs[0] !== undefined) {
       try {
-        let arrayDeIds = docs[0].users.socketId;
-        let elArray = arrayDeIds.indexOf(`${socket.id}`);
-        let _id = docs[0]._id;
-        let userNumber = docs[0].users.userNumber[elArray];
-        let userName = docs[0].users.userName[elArray];
-        let userColor = docs[0].users.userColor[elArray];
+        const arrayDeIds = docs[0].users.socketId;
+        const elArray = arrayDeIds.indexOf(`${socketId}`);
+        const { _id } = docs[0];
+        const userNumber = docs[0].users.userNumber[elArray];
+        const userName = docs[0].users.userName[elArray];
+        const userColor = docs[0].users.userColor[elArray];
 
-        let userNames = docs[0].users.userName;
-        let userColors = docs[0].users.userColor;
-        let userPoints = docs[0].users.userPoints;
+        const userNames = docs[0].users.userName;
+        const userColors = docs[0].users.userColor;
+        const { userPoints } = docs[0].users;
 
-        let newLeaderNum = docs[0].users.userNumber[1];
-        let newLeaderName = docs[0].users.userName[1];
+        const newLeaderNum = docs[0].users.userNumber[1];
+        const newLeaderName = docs[0].users.userName[1];
 
-        let leaderNum = docs[0].users.userNumber[0];
+        const leaderNum = docs[0].users.userNumber[0];
 
-        let userTurn = docs[0].userTurn;
-        let numTurn = docs[0].users.userNumber[userTurn];
+        const { userTurn } = docs[0];
+        const numTurn = docs[0].users.userNumber[userTurn];
 
-        let gameStatus = docs[0].gameStatus;
+        const { gameStatus } = docs[0];
 
         databaseUsers.update(
           { _id: `${_id}` },
           {
             $pull: {
-              "users.socketId": socket.id,
+              "users.socketId": socketId,
               "users.userNumber": userNumber,
             },
           }
         );
 
-        returnColorsArray(elArray);
+        userNames.splice(elArray, 1);
+        userColors.splice(elArray, 1);
+        userPoints.splice(elArray, 1);
 
-        checkIfIsAnUserBef();
-        function checkIfIsAnUserBef() {
-          if (userNumber < numTurn) {
-            let userTurn1Less = Number(userTurn - 1);
-            databaseUsers.update(
-              { _id: `${_id}` },
-              {
-                $set: {
-                  userTurn: userTurn1Less,
-                },
-              }
-            );
+        checkIfIsAnUserBef(_id, userNumber, numTurn, userTurn);
 
-            databaseUsers.persistence.compactDatafile();
-          }
-        }
+        returnColorsArray(_id, elArray, userNames, userColors, userPoints);
 
-        function returnColorsArray(elArray) {
-          if (elArray > -1) {
-            userNames.splice(elArray, 1);
-            userColors.splice(elArray, 1);
-            userPoints.splice(elArray, 1);
-
-            databaseUsers.update(
-              { _id: `${_id}` },
-              {
-                $set: {
-                  "users.userName": userNames,
-                  "users.userColor": userColors,
-                  "users.userPoints": userPoints,
-                },
-              }
-            );
-          }
-        }
-
-        databaseUsers.persistence.compactDatafile();
-
-        let checkIf = arrayDeIds.length;
+        const checkIf = arrayDeIds.length;
 
         io.to(_id).emit("message", `${userName} has left the chat`, userColor);
 
+        erraseRoom(_id, checkIf);
+
         // Send users and room info
-        if (userNumber === leaderNum && gameStatus == "waiting Room") {
+        if (userNumber === leaderNum && gameStatus === "waiting Room") {
           updateRoomUsers(_id, newLeaderNum, newLeaderName);
-        } else if (elArray === userTurn && gameStatus == "Painting") {
-          let end = "forced";
+        } else if (elArray === userTurn && gameStatus === "Painting") {
+          const end = "forced";
           updateRoomUsers(_id);
           endOfTheMatch(socket, _id, end, absoluteUrl);
           elimnWord(_id);
-        } else if (elArray === userTurn && gameStatus == "ratingPaint") {
+        } else if (elArray === userTurn && gameStatus === "ratingPaint") {
           updateRoomUsers(_id);
           if (userTurn >= arrayDeIds.length - 1) {
             socket.to(arrayDeIds[0]).emit("continueCounting15sec");
           } else if (userTurn < arrayDeIds.length - 1) {
             socket.to(arrayDeIds[userTurn + 1]).emit("continueCounting15sec");
           }
-        } else if (elArray === userTurn && gameStatus == "viewing Score") {
+        } else if (elArray === userTurn && gameStatus === "viewing Score") {
           updateRoomUsers(_id);
           if (userTurn >= arrayDeIds.length - 1) {
             socket.to(arrayDeIds[0]).emit("continueCounting10sec");
@@ -114,11 +110,12 @@ function socketDisconnect(socket, socketId, absoluteUrl) {
         } else {
           updateRoomUsers(_id);
         }
-
-        erraseRoom(_id, checkIf);
       } catch (error) {
         console.log(error);
       }
+    } else {
+      socket.emit("bruh", "connection error, please relogin");
+      return err;
     }
   });
 }

@@ -81,7 +81,7 @@ body {
     height: 40vh;
   }
 
-  .smilsadFace {
+  .smileSadFace {
     position: fixed;
     width: 15vw;
     height: 35vh;
@@ -207,6 +207,12 @@ button {
     margin: 0;
     padding-left: 2.4%;
   }
+}
+
+.joinInput,
+.createInput {
+  opacity: 0;
+  display: none;
 }
 
 .join-room,

@@ -11,19 +11,22 @@ function socketJoinRoom(
   userName,
   userColor
 ) {
-  if (userNumber == -1) {
+  if (userNumber === -1) {
     databaseUsers.find({ _id: `${_id}` }, (err, docs) => {
-      if (docs[0] == null) {
-        return err;
-      } else if (docs[0] !== null) {
+      if (docs[0] != null && docs[0] !== undefined) {
         const getLastNumArray = docs[0].users.userNumber.length - 1;
-        const getLastNum = docs[0].users.userNumber[getLastNumArray];
-        const uno = 1;
-        const userNumber = getLastNum + uno;
+        const newUserNumber =
+          Number(docs[0].users.userNumber[getLastNumArray]) + 1;
 
-        const user = userJoin(socket.id, _id, userNumber, userName, userColor);
+        const user = userJoin(
+          socket.id,
+          _id,
+          newUserNumber,
+          userName,
+          userColor
+        );
 
-        socket.emit("userNumber", userNumber);
+        socket.emit("userNumber", newUserNumber);
 
         socket.join(user._id);
 
@@ -37,6 +40,8 @@ function socketJoinRoom(
             user.userColor
           );
         updateRoomUsers(_id);
+      } else {
+        return err;
       }
     });
   } else {

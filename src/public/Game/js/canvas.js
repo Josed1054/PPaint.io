@@ -1,12 +1,8 @@
 import { sendLocCanvas, emitCanvasPainted } from "./index.js";
-import { newElement } from "./createElements.js";
+import { NewElement } from "./createElements.js";
 
 const canvas = document.querySelector("#canvasPlayer");
 const context = canvas.getContext("2d");
-const canvasPaint = document.querySelector(".canvasPaint");
-
-let canvasWidth;
-let canvasHeight;
 
 let strokesWidthEmit = 3;
 let strokesColorEmit = "black";
@@ -19,99 +15,52 @@ let usingBrush = false;
 let colorSet = "black";
 let lineWidth = 3;
 
-class MouseDownPos {
-  constructor(x, y) {
-    (this.x = x), (this.y = y);
-  }
-}
-
 class Location {
   constructor(x, y) {
-    (this.x = x), (this.y = y);
+    this.x = x;
+    this.y = y;
   }
 }
 
-let mousedown = new MouseDownPos(0, 0);
+const mousedown = new Location(0, 0);
 let loc = new Location(0, 0);
 
-var clientTouchX, clientTouchY;
+let clientTouchX;
+let clientTouchY;
 
 canvas.width = 500;
 canvas.height = 400;
 
-canvasWidth = 500;
-canvasHeight = 400;
+const canvasWidth = 500;
+const canvasHeight = 400;
 
 //
 
 const $divCanvasContainer = document.querySelector(".canvasContainer");
 const $canvasPlayer = document.querySelector("#canvasPlayer");
 
-let widthWindow;
-
-setTimeout(setCanvasSize, 500);
 export function setCanvasSize() {
-  widthWindow =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
+  const divWidth = $divCanvasContainer.clientWidth / 1.2;
+  const divHeight = $divCanvasContainer.clientHeight / 1.3;
 
-  let divWidth = $divCanvasContainer.clientWidth / 1.2;
-  let divHeight = $divCanvasContainer.clientHeight / 1.3;
-
-  let xScale = divWidth / 500;
-  let yScale = divHeight / 400;
+  const xScale = divWidth / 500;
+  const yScale = divHeight / 400;
 
   $canvasPlayer.style.transform = `scale(${xScale}, ${yScale})`;
 }
-
-export function drawing() {
-  document.querySelector(".canvasPaint").style.zIndex = 100;
-  colorSet = "black";
-  lineWidth = 3;
-
-  createTools();
-
-  createColors();
-
-  canvas.addEventListener("mousedown", ReactToMouseDown);
-
-  canvas.addEventListener("mousemove", ReactToMouseMove);
-
-  canvas.addEventListener("mouseup", ReactToMouseUp);
-
-  canvas.addEventListener("mouseout", (e) => {
-    usingBrush = false;
-    context.beginPath();
-
-    canvasAction = "canvasUp";
-
-    sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
-  });
-
-  //Eventslisteners Touch
-
-  canvas.addEventListener("touchstart", ReactToTouchDown);
-
-  canvas.addEventListener("touchmove", ReactToTouchMove);
-
-  canvas.addEventListener("touchend", ReactToTouchUp);
-
-  //Touch Events
-}
+setTimeout(setCanvasSize, 500);
 
 function createTools() {
-  // Create Tools
-  let widthsArray = [3, 6, 9, 12];
+  const widthsArray = [3, 6, 9, 12];
 
-  let strokesWidthsCls = new newElement(
+  const strokesWidthsCls = new NewElement(
     "strokesWidths",
     "div",
     ".toolsContainer"
   );
   strokesWidthsCls.addElement();
 
-  let strokeTextCls = new newElement(
+  const strokeTextCls = new NewElement(
     "StrokeP",
     "p",
     ".strokesWidths",
@@ -119,11 +68,11 @@ function createTools() {
   );
   strokeTextCls.addElementAndInnerText();
 
-  let toolsCls = new newElement("tools", "div", ".strokesWidths");
+  const toolsCls = new NewElement("tools", "div", ".strokesWidths");
   toolsCls.addElement();
 
   widthsArray.forEach((width) => {
-    let strokeWidth = document.createElement("div");
+    const strokeWidth = document.createElement("div");
     strokeWidth.className = `strokes stroke${width}`;
     strokeWidth.style.width = `${(1 / width) * 30 + width * 1.2}px`;
     strokeWidth.style.height = `${(1 / width) * 30 + width * 1.2}px`;
@@ -143,8 +92,7 @@ function createTools() {
 }
 
 function createColors() {
-  // Create Colors
-  let colorsArray = [
+  const colorsArray = [
     "white",
     "black",
     "red",
@@ -155,16 +103,16 @@ function createColors() {
     "yellow",
     "green",
   ];
-  let colorsCls = new newElement("colors", "div", ".toolsContainer");
+  const colorsCls = new NewElement("colors", "div", ".toolsContainer");
   colorsCls.addElement();
 
-  let colorsTextCls = new newElement("ColorsP", "p", ".colors", "Colors:");
+  const colorsTextCls = new NewElement("ColorsP", "p", ".colors", "Colors:");
   colorsTextCls.addElementAndInnerText();
 
-  let colorsDivCls = new newElement("colorsDiv", "div", ".colors");
+  const colorsDivCls = new NewElement("colorsDiv", "div", ".colors");
   colorsDivCls.addElement();
 
-  let newCanvasIconCls = new newElement(
+  const newCanvasIconCls = new NewElement(
     "eraseCanvas",
     "p",
     ".colorsDiv",
@@ -185,7 +133,7 @@ function createColors() {
   });
 
   colorsArray.forEach((colorArray) => {
-    let colorDiv = document.createElement("div");
+    const colorDiv = document.createElement("div");
     colorDiv.className = `buttonColors buttonColor${colorArray}`;
     colorDiv.style.background = `${colorArray}`;
     colorDiv.style.cursor = "pointer";
@@ -205,32 +153,11 @@ function createColors() {
 }
 
 function GetMousePosition(x, y) {
-  // Get canvas size and position in web page
-  let canvasSizeData = canvas.getBoundingClientRect();
+  const canvasSizeData = canvas.getBoundingClientRect();
   return {
     x: (x - canvasSizeData.left) * (canvas.width / canvasSizeData.width),
     y: (y - canvasSizeData.top) * (canvas.height / canvasSizeData.height),
   };
-}
-
-function ReactToMouseDown(e) {
-  canvas.style.cursor = "crosshair";
-
-  context.strokeStyle = colorSet;
-  context.lineWidth = lineWidth;
-
-  strokesColorEmit = colorSet;
-  strokesWidthEmit = lineWidth;
-
-  loc = GetMousePosition(e.clientX, e.clientY);
-  mousedown.x = loc.x;
-  mousedown.y = loc.y;
-  usingBrush = true;
-  ReactToMouseMove(e);
-
-  canvasAction = "canvasDown";
-
-  sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
 }
 
 function ReactToMouseMove(e) {
@@ -255,6 +182,26 @@ function ReactToMouseMove(e) {
   sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
 }
 
+function ReactToMouseDown(e) {
+  canvas.style.cursor = "crosshair";
+
+  context.strokeStyle = colorSet;
+  context.lineWidth = lineWidth;
+
+  strokesColorEmit = colorSet;
+  strokesWidthEmit = lineWidth;
+
+  loc = GetMousePosition(e.clientX, e.clientY);
+  mousedown.x = loc.x;
+  mousedown.y = loc.y;
+  usingBrush = true;
+  ReactToMouseMove(e);
+
+  canvasAction = "canvasDown";
+
+  sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
+}
+
 function ReactToMouseUp(e) {
   canvas.style.cursor = "default";
   loc = GetMousePosition(e.clientX, e.clientY);
@@ -264,32 +211,6 @@ function ReactToMouseUp(e) {
   canvasAction = "canvasUp";
 
   sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
-}
-
-function ReactToTouchDown(e) {
-  context.strokeStyle = colorSet;
-  context.lineWidth = lineWidth;
-
-  strokesColorEmit = colorSet;
-  strokesWidthEmit = lineWidth;
-
-  clientTouchX = e.touches[0].clientX;
-  clientTouchY = e.touches[0].clientY;
-
-  loc = GetMousePosition(clientTouchX, clientTouchY);
-  // Store mouse position when clicked
-  mousedown.x = loc.x;
-  mousedown.y = loc.y;
-  // Store that yes the mouse is being held down
-  usingBrush = true;
-
-  canvasAction = "canvasDown";
-
-  sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
-
-  ReactToTouchMove(e);
-
-  e.preventDefault(e);
 }
 
 function ReactToTouchMove(e) {
@@ -330,6 +251,32 @@ function ReactToTouchMove(e) {
   e.preventDefault(e);
 }
 
+function ReactToTouchDown(e) {
+  context.strokeStyle = colorSet;
+  context.lineWidth = lineWidth;
+
+  strokesColorEmit = colorSet;
+  strokesWidthEmit = lineWidth;
+
+  clientTouchX = e.touches[0].clientX;
+  clientTouchY = e.touches[0].clientY;
+
+  loc = GetMousePosition(clientTouchX, clientTouchY);
+  // Store mouse position when clicked
+  mousedown.x = loc.x;
+  mousedown.y = loc.y;
+  // Store that yes the mouse is being held down
+  usingBrush = true;
+
+  canvasAction = "canvasDown";
+
+  sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
+
+  ReactToTouchMove(e);
+
+  e.preventDefault(e);
+}
+
 function ReactToTouchUp(e) {
   loc = GetMousePosition(e.clientX, e.clientY);
   usingBrush = false;
@@ -342,30 +289,73 @@ function ReactToTouchUp(e) {
   e.preventDefault(e);
 }
 
-// Project what others user paint
+export function drawing() {
+  document.querySelector(".canvasPaint").style.zIndex = 100;
+  colorSet = "black";
+  lineWidth = 3;
 
-export function drawMovementDown(loc, strokesColorEmit, strokesWidthEmit) {
-  context.strokeStyle = strokesColorEmit;
-  context.lineWidth = strokesWidthEmit;
+  createTools();
 
-  mousedown.x = loc.x;
-  mousedown.y = loc.y;
+  createColors();
 
-  usingBrush = true;
+  canvas.addEventListener("mousedown", ReactToMouseDown);
 
-  drawMovementMove(loc, strokesColorEmit, strokesWidthEmit);
+  canvas.addEventListener("mousemove", ReactToMouseMove);
+
+  canvas.addEventListener("mouseup", ReactToMouseUp);
+
+  canvas.addEventListener("mouseout", () => {
+    usingBrush = false;
+    context.beginPath();
+
+    canvasAction = "canvasUp";
+
+    sendLocCanvas(canvasAction, loc, strokesColorEmit, strokesWidthEmit);
+  });
+
+  // Eventslisteners Touch
+
+  canvas.addEventListener("touchstart", ReactToTouchDown);
+
+  canvas.addEventListener("touchmove", ReactToTouchMove);
+
+  canvas.addEventListener("touchend", ReactToTouchUp);
+
+  // Touch Events
 }
 
-export function drawMovementMove(loc, strokesColorEmit, strokesWidthEmit) {
-  context.strokeStyle = strokesColorEmit;
-  context.lineWidth = strokesWidthEmit;
+// Project what others users paint
+
+export function drawMovementMove(
+  locDraw,
+  strokesColorEmitDraw,
+  strokesWidthEmitDraw
+) {
+  context.strokeStyle = strokesColorEmitDraw;
+  context.lineWidth = strokesWidthEmitDraw;
 
   context.lineCap = "round";
 
-  context.lineTo(loc.x, loc.y);
+  context.lineTo(locDraw.x, locDraw.y);
   context.stroke();
   context.beginPath();
-  context.moveTo(loc.x, loc.y);
+  context.moveTo(locDraw.x, locDraw.y);
+}
+
+export function drawMovementDown(
+  locDraw,
+  strokesColorEmitDraw,
+  strokesWidthEmitDraw
+) {
+  context.strokeStyle = strokesColorEmitDraw;
+  context.lineWidth = strokesWidthEmitDraw;
+
+  mousedown.x = locDraw.x;
+  mousedown.y = locDraw.y;
+
+  usingBrush = true;
+
+  drawMovementMove(locDraw, strokesColorEmitDraw, strokesWidthEmitDraw);
 }
 
 export function drawMovementUp() {
@@ -388,6 +378,6 @@ export function removeCanvasEvLi() {
 
   canvas.style.cursor = "default";
 
-  let canvasPainted = canvas.toDataURL();
+  const canvasPainted = canvas.toDataURL();
   emitCanvasPainted(canvasPainted);
 }

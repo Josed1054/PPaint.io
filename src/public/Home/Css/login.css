@@ -88,7 +88,7 @@ body {
   height: 40vh;
 }
 
-.svgs .smilsadFace {
+.svgs .smileSadFace {
   position: fixed;
   width: 15vw;
   height: 35vh;
@@ -233,6 +233,12 @@ button {
   width: 30%;
   margin: 0;
   padding-left: 2.4%;
+}
+
+.joinInput,
+.createInput {
+  opacity: 0;
+  display: none;
 }
 
 .join-room,

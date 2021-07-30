@@ -1,16 +1,4 @@
-const socket = io();
-
-let round;
-
-const _id = `${sessionStorage.getItem("room")}${sessionStorage.getItem(
-  "code"
-)}`;
-const room = sessionStorage.getItem("room");
-const code = sessionStorage.getItem("code");
-const userName = sessionStorage.getItem("userName");
-const userColor = sessionStorage.getItem("userColor");
-let userNumber = Number(sessionStorage.getItem("userNumber"));
-
+/* eslint-disable no-undef */
 // Room
 import {
   innerCodeRoom,
@@ -62,6 +50,19 @@ import {
   sendUserToHome,
 } from "./userManagement.js";
 
+const socket = io();
+
+let round;
+
+const _id = `${sessionStorage.getItem("room")}${sessionStorage.getItem(
+  "code"
+)}`;
+const room = sessionStorage.getItem("room");
+const code = sessionStorage.getItem("code");
+const userName = sessionStorage.getItem("userName");
+const userColor = sessionStorage.getItem("userColor");
+let userNumber = Number(sessionStorage.getItem("userNumber"));
+
 window.onload = checkUserData(room);
 
 window.addEventListener("beforeunload", function (e) {
@@ -98,8 +99,7 @@ innerCodeRoom(room, code);
 
 const url = window.location.href;
 const arr = url.split("/");
-const result = arr[0] + "//" + arr[2];
-socket.emit("url", result);
+socket.emit("url", `${arr[0]}//${arr[2]}`);
 
 // Error handleler
 socket.on("bruh", (bruh) => {
@@ -121,6 +121,9 @@ socket.on("round", (gameRound) => {
 
 // !! here I need to fix the way the game starts, the server should do this
 let oneStartGame = false;
+let oneUsersResume = true;
+let onePaintsResume = true;
+
 socket.on("startGame", () => {
   if (!oneStartGame) {
     oneStartGame = true;
@@ -132,10 +135,10 @@ socket.on("startGame", () => {
       document.querySelector(".startBlock") ||
       document.querySelector(".canvasDivs");
 
-    if (startBlock.attributes.class.nodeValue == "canvasDivs") {
+    if (startBlock.attributes.class.nodeValue === "canvasDivs") {
       const drawBlock = document.querySelector(".paintDiv");
 
-      if (drawBlock == null || drawBlock == undefined) {
+      if (drawBlock === null || drawBlock === undefined) {
         startBlock.remove();
         document.querySelector(".wallBlock").remove();
         document.querySelector(".usersDiv").remove();
@@ -170,12 +173,12 @@ socket.on("broadcastedTime60", (seconds) => {
 // Handleling secret word
 
 // Message from server
-socket.on("message", (message, userColor) => {
-  outputMessage(message, userColor);
+socket.on("message", (message, userColorSender) => {
+  outputMessage(message, userColorSender);
 });
 
-socket.on("messageWord", (userName, seconds, userColor) => {
-  outputMessageWord(userName, seconds, userColor);
+socket.on("messageWord", (userNameSender, seconds, userColorSender) => {
+  outputMessageWord(userNameSender, seconds, userColorSender);
 });
 
 socket.on("disableChat", () => {
@@ -205,7 +208,7 @@ socket.on(
 
 // ?? here I think this need to be change, but I´m not secure
 socket.on("newLeader", (newLeaderNum, newLeaderName) => {
-  let leaderName = newLeaderName;
+  const leaderName = newLeaderName;
 
   newLeader(newLeaderNum, newLeaderName);
 
@@ -224,14 +227,26 @@ socket.on("chooseWord", (word1, word2, word3) => {
 
 socket.on(
   "canvasXYs",
-  (canvasAction, loc, userName, userColor, colorSet, line_Width) => {
-    if (canvasAction == "canvasDown") {
-      drawMovementDown(loc, userName, userColor, colorSet, line_Width);
-    } else if (canvasAction == "canvasMove") {
-      drawMovementMove(loc, userName, userColor, colorSet, line_Width);
-    } else if (canvasAction == "canvasUp") {
+  (canvasAction, loc, userNameSender, userColorSender, colorSet, lineWidth) => {
+    if (canvasAction === "canvasDown") {
+      drawMovementDown(
+        loc,
+        userNameSender,
+        userColorSender,
+        colorSet,
+        lineWidth
+      );
+    } else if (canvasAction === "canvasMove") {
+      drawMovementMove(
+        loc,
+        userNameSender,
+        userColorSender,
+        colorSet,
+        lineWidth
+      );
+    } else if (canvasAction === "canvasUp") {
       drawMovementUp();
-    } else if (canvasAction == "eraseCanvas") {
+    } else if (canvasAction === "eraseCanvas") {
       eraseCanvas();
     }
   }
@@ -252,8 +267,8 @@ let oneTimeRate = false;
 socket.on("rateCanvas", (canvasPainted, wordPainted) => {
   if (!oneTimeRate) {
     rateCanvas(canvasPainted, wordPainted);
-
-    return (oneTimeRate = true), (gameStatus = "ratingPaint");
+    oneTimeRate = true;
+    gameStatus = "ratingPaint";
   }
 });
 
@@ -303,20 +318,20 @@ socket.on("continueCounting10sec", () => {
 
 // ?? I need to figure out a way to do
 // ?? the onTimeRate from the server and not from the client
-let oneUsersResume = true;
 socket.on("usersResume", (numbers, users, colors, points) => {
-  if (oneUsersResume)
-    usersResume(numbers, users, colors, points, userNumber, userColor),
-      (oneUsersResume = false);
+  if (oneUsersResume) {
+    usersResume(numbers, users, colors, points, userNumber, userColor);
+    oneUsersResume = false;
+  }
 });
 
 // ?? I need to figure out a way to do
 // ?? the onTimeRate from the server and not from the client
-let onePaintsResume = true;
 socket.on("paintsResume", (canvas, users, colors, points, words) => {
-  if (onePaintsResume)
-    paintsResume(canvas, users, colors, points, words),
-      (onePaintsResume = false);
+  if (onePaintsResume) {
+    paintsResume(canvas, users, colors, points, words);
+    onePaintsResume = false;
+  }
 });
 
 // Emit events

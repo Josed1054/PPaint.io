@@ -1,22 +1,21 @@
+/* eslint-disable no-unused-expressions */
 const {
   createRoomController,
   joinRoomController,
-  returnRoomController,
 } = require("../controllers/routeControllers");
 
 function expressRouteCreate(request, response) {
   const data = request.body;
-  const btnGender = data.btnGender;
+  const { inputType } = data;
 
-  if (data.btnGender == undefined) {
-    return response.redirect("/");
-  } else {
-    if (btnGender == "create") {
-      createRoomController(request, response);
-    } else if (btnGender == "join") {
-      joinRoomController(request, response);
-    }
-  }
+  const RESPONSE_REDIRECT = {
+    create: () => createRoomController(request, response),
+    join: () => joinRoomController(request, response),
+  };
+
+  RESPONSE_REDIRECT[inputType]
+    ? RESPONSE_REDIRECT[inputType]()
+    : response.redirect("/")();
 }
 
 module.exports = {
